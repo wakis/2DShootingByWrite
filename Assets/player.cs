@@ -11,18 +11,22 @@ public struct PlayerStatus
     [System.NonSerialized]
     public List<GameObject> bullet;
 
-    public int hp;
     public float setCoolTime;
     public float speed;
     public int bulletnum;
 
 }
+[RequireComponent(typeof(Rigidbody2D))]
 public class player : MonoBehaviour
 {
     [SerializeField]
     GameObject nanoBullet;//最小値の弾
     [SerializeField]
     PlayerStatus pStatus = new PlayerStatus();//ステータス
+
+    Rigidbody2D rig;//移動制御用
+    GAMERULE GameRule;//ゲームルール
+
     public void addPlayerBullet(GameObject obj)//lineで描いた弾の装填
     {
         pStatus.bullet.Add(obj);
@@ -34,6 +38,10 @@ public class player : MonoBehaviour
         //各ステータスの初期化
         pStatus.bullet = new List<GameObject>();
         pStatus.nowBullet = nanoBullet;
+        rig = GetComponent<Rigidbody2D>();
+        rig.gravityScale = 0;
+        GameRule = Camera.main.GetComponent<GAMERULE>();
+        GameRule.Player = gameObject;
     }
 
     // Update is called once per frame
@@ -79,11 +87,24 @@ public class player : MonoBehaviour
     }
     void transPosition()//プレイヤーの移動
     {
-        var transPos = transform.position;
-        Vector2 deltaSpeed = new Vector2(0f,0f);
-        deltaSpeed = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-        transPos += (Vector3)deltaSpeed * Time.deltaTime * pStatus.speed;
-        transform.position = transPos;
+        float hor = 0, ver = 0;
+        if(0.9f*GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x < 0.9f * GameRule.ScreenSize[1].x)
+        {
+            hor = Input.GetAxis("Horizontal");
+        }
+        else
+        {
+            hor = -Mathf.Abs(Input.GetAxis("Horizontal")) * transform.position.x / Mathf.Abs(transform.position.x);
+        }
+        if(0.9f * GameRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * GameRule.ScreenSize[1].y)
+        {
+            ver = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            ver = -Mathf.Abs(Input.GetAxis("Vertical")) * transform.position.y / Mathf.Abs(transform.position.y);
+        }
+        rig.velocity = new Vector2(hor, ver) * Time.deltaTime * pStatus.speed;
     }
 
     void shot()
@@ -94,10 +115,9 @@ public class player : MonoBehaviour
             {
                 var vect = transform.eulerAngles + new Vector3(0f, 0f, Random.Range(0f,0f));
                 var bullet = Instantiate(pStatus.nowBullet, transform.position, Quaternion.Euler(vect));
-                bullet.GetComponent<Collider2D>().isTrigger = true;
-                var rig = bullet.AddComponent<Rigidbody2D>();
-                rig.gravityScale = 0;
-                rig.AddForce(Vector2.right * pStatus.speed * pStatus.speed,ForceMode2D.Impulse);
+                var inp = bullet.AddComponent<bulletImpact>();
+                inp.speed = pStatus.speed/1000f * 4f;
+                inp.vect = bullet.transform.right;
                 pStatus.coolTime = pStatus.setCoolTime;
                 if (pStatus.nowBullet.GetComponent<LineRenderer>() != null)//line弾を縮める
                 {

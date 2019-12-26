@@ -15,7 +15,7 @@ struct boolVector
 }
 public class addLine : MonoBehaviour
 {
-    public player Player;//プレイヤーObject格納
+    player Player;//プレイヤーObject格納
     public float num;
     List<LineRenderer> lineList = new List<LineRenderer>();//線のlist
 
@@ -24,7 +24,7 @@ public class addLine : MonoBehaviour
     public Color stlineColor; //線の色
     public Color edlineColor;
 
-    public float lineWidth=10f;//線の太さ
+    public float lineWidth=0.1f;//線の太さ
 
     Vector3[] pointAngle = new Vector3[3];
 
@@ -36,7 +36,7 @@ public class addLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player = Camera.main.GetComponent<GAMERULE>().Player.GetComponent<player>();
     }
 
     // Update is called once per frame
