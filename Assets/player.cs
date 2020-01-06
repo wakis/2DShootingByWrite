@@ -87,23 +87,55 @@ public class player : MonoBehaviour
     }
     void transPosition()//プレイヤーの移動
     {
-        float hor = 0, ver = 0;
-        if(0.9f*GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x < 0.9f * GameRule.ScreenSize[1].x)
+        float hor = Input.GetAxis("Horizontal"), ver = Input.GetAxis("Vertical");
+        if (Mathf.Abs(hor)>0&&
+            !(0.9f * GameRule.ScreenSize[0].x < transform.position.x && transform.position.x < 0.9f * GameRule.ScreenSize[1].x))
         {
-            hor = Input.GetAxis("Horizontal");
+            var trans = transform.position;
+            if (transform.position.x < 0.9f * GameRule.ScreenSize[0].x)
+                trans.x = 0.9f * GameRule.ScreenSize[0].x;
+            else
+                trans.x = 0.9f * GameRule.ScreenSize[1].x;
+            transform.position = trans;
+            if (transform.position.x / Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
+            {
+                hor = 0;
+            }
+        }
+        if (Mathf.Abs(ver) > 0&&
+            !(0.9f * GameRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * GameRule.ScreenSize[1].y))
+        {
+            var trans = transform.position;
+            if (transform.position.y < 0.9f * GameRule.ScreenSize[0].y)
+                trans.y = 0.9f * GameRule.ScreenSize[0].y;
+            else
+                trans.y = 0.9f * GameRule.ScreenSize[1].y;
+            transform.position = trans;
+            if (transform.position.y / Mathf.Abs(transform.position.y) == ver / Mathf.Abs(ver))
+            {
+                ver = 0;
+            }
+        }
+        /*if(0.9f*GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x < 0.9f * GameRule.ScreenSize[1].x)
+        {
+
         }
         else
         {
-            hor = -Mathf.Abs(Input.GetAxis("Horizontal")) * transform.position.x / Mathf.Abs(transform.position.x);
+            if(transform.position.x/Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
+            {
+
+            }
+            //hor = -Mathf.Abs(Input.GetAxis("Horizontal")) * transform.position.x / Mathf.Abs(transform.position.x);
         }
         if(0.9f * GameRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * GameRule.ScreenSize[1].y)
         {
-            ver = Input.GetAxis("Vertical");
+            ver = ;
         }
         else
         {
             ver = -Mathf.Abs(Input.GetAxis("Vertical")) * transform.position.y / Mathf.Abs(transform.position.y);
-        }
+        }*/
         rig.velocity = new Vector2(hor, ver) * Time.deltaTime * pStatus.speed;
     }
 

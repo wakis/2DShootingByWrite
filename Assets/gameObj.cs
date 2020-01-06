@@ -23,7 +23,7 @@ public class gameObj : MonoBehaviour
     {
         ScreenSize[0] = Camera.main.ViewportToWorldPoint(new Vector3(0, 0,10));
         ScreenSize[1] = Camera.main.ViewportToWorldPoint(new Vector3(1, 1,10));
-        Debug.Log(ScreenSize[0] + ";" + ScreenSize[1]);
+
         /* foreach (var p_obj in FindObjectsOfType<player>())
          {
              if (p_obj.tag == "Player")

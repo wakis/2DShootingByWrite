@@ -5,10 +5,10 @@ using UnityEngine;
 public class objStatusDefault : MonoBehaviour
 {
     public GameObject bullet;
-    gameObj objRule;
-    float coolTime;
-    float setCoolTime;
-    float speed;
+    protected　gameObj objRule;
+    protected float coolTime;
+    protected float setCoolTime;
+    protected float speed;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +20,18 @@ public class objStatusDefault : MonoBehaviour
     {
         
     }
+    public void Scroll(GameObject obj)
+    {
+        Debug.Log(objRule.scrollSpeed);
+        obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
+    }
 
-    public virtual void Renewal(GameObject obj)
+    public virtual void Renewal(GameObject obj)//切り替え時
     {
 
     }
 
-    public virtual int Setting(GameObject obj)
+    public virtual int Setting(GameObject obj)//ゲーム開始時
     {
         objRule = Camera.main.GetComponent<gameObj>();
         speed = obj.GetComponent<objStatusRenewal>().eStatus.speed;
@@ -35,15 +40,15 @@ public class objStatusDefault : MonoBehaviour
         return 1;
     }
 
-    public virtual int Stay(GameObject obj)
+    public virtual int Stay(GameObject obj)//待機状態
     {
-        Debug.Log(objRule.scrollSpeed);
+
         obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
-        if(obj.transform.position.x<objRule.ScreenSize[1].x) return 1;
+        if (obj.transform.position.x<objRule.ScreenSize[1].x) return 1;
         return 0;
     }
 
-    public virtual int Play(GameObject obj)
+    public virtual int Play(GameObject obj)//画面内行動
     {
         obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed+speed);
         if (coolTime < 0f)
@@ -58,16 +63,16 @@ public class objStatusDefault : MonoBehaviour
         if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x) return 1;
         return 0;
     }
-    public virtual void Loss(GameObject obj)
+    public virtual void Loss(GameObject obj)//消失時
     {
-        Destroy(obj);
+        
     }
 
-    Vector3 transPos_Front(Transform trans,float speed)
+    protected Vector3 transPos_Front(Transform trans,float speed)
     {
         var transPos = trans.position;
         transPos -= speed * Time.deltaTime * trans.right;
-        Debug.Log(transPos);
+
         return transPos;
     }
 }
