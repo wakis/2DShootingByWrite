@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyBullet
       objectReference: {fileID: 0}
+    - target: {fileID: 6917606006511817085, guid: c3262da59e520114c90a725515fa51ae,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5787363778046547745, guid: c3262da59e520114c90a725515fa51ae,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -73,10 +78,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: e486980bc7bab604abf36a4c77e0a059,
         type: 3}
-    - target: {fileID: 6917606006511817085, guid: c3262da59e520114c90a725515fa51ae,
+    - target: {fileID: 5916563653716579642, guid: c3262da59e520114c90a725515fa51ae,
         type: 3}
-      propertyPath: m_Radius
-      value: 0.1
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5916563653716579642, guid: c3262da59e520114c90a725515fa51ae,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3262da59e520114c90a725515fa51ae, type: 3}

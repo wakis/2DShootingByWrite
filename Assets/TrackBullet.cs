@@ -10,7 +10,7 @@ public class TrackBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        vect = (Camera.main.GetComponent<gameObj>().player.transform.position - transform.position).normalized;
+        vect = Vector3.right*2f;
         objRule = objRule = Camera.main.GetComponent<gameObj>();
         front = false;
     }

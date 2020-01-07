@@ -22,7 +22,7 @@ public class objStatusDefault : MonoBehaviour
     }
     public void Scroll(GameObject obj)
     {
-        Debug.Log(objRule.scrollSpeed);
+
         obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
     }
 

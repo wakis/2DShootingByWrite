@@ -64,7 +64,7 @@ namespace enemyMoveScript
                 {
                     if (10f * (1f - coolTime / setCoolTime) < 1f)
                     {
-                        Debug.Log(2f * (1f - coolTime / setCoolTime));
+
                         line.SetPosition(1, linePos[1] - (linePos[1] - linePos[0]) * 10f*(1f - coolTime / setCoolTime));
                     }else if(coolTime>0f)
                     {
@@ -96,6 +96,10 @@ namespace enemyMoveScript
             line.startWidth = line.endWidth = 0.1f;
             line.positionCount = 2;
             line.SetPositions(new Vector3[] { linePos[0], linePos[1] });
+        }
+        private void OnDestroy()
+        {
+            Destroy(line);
         }
     }
 }
