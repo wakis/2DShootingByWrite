@@ -148,6 +148,7 @@ public class player : MonoBehaviour
                 var vect = transform.eulerAngles + new Vector3(0f, 0f, Random.Range(0f,0f));
                 var bullet = Instantiate(pStatus.nowBullet, transform.position, Quaternion.Euler(vect));
                 var inp = bullet.AddComponent<bulletImpact>();
+                bullet.tag = "PlayerBullet";
                 inp.speed = pStatus.speed/1000f * 4f;
                 inp.vect = bullet.transform.right;
                 pStatus.coolTime = pStatus.setCoolTime;
@@ -159,6 +160,31 @@ public class player : MonoBehaviour
             
         }
         if (pStatus.coolTime > 0f) pStatus.coolTime -= Time.deltaTime;
+    }
+
+    ///ここに遠隔リサイズ処理入れる
+
+    public void reSize(LineRenderer line)
+    {
+        Vector2 size = line.transform.localScale;
+        Vector2 bSize = line.GetComponent<bullet>().bStatus.size;
+        if (size.magnitude * bSize.magnitude < 0.2f)
+        {
+            Debug.Log("OK" + line.name);
+            for (int lp=0;lp< pStatus.bullet.Count;lp++) {
+                if(line.gameObject== pStatus.bullet[lp].gameObject)
+                {
+                    Destroy(pStatus.bullet[lp]);
+                    pStatus.bullet.Remove(pStatus.bullet[lp]);
+                    if (pStatus.nowBullet== pStatus.bullet[lp]) { pStatus.nowBullet = nanoBullet; }
+                }
+            }
+        }
+        else
+        {
+            size *= 0.8f;
+            line.transform.localScale = size;
+        }
     }
     void setReSize()
     {

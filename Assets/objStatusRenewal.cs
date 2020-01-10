@@ -67,4 +67,8 @@ public class objStatusRenewal : MonoBehaviour
         }
         if (stepnum > 0) nextSt = status + 1;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        objType.OnHit(gameObject,collision.gameObject);
+    }
 }

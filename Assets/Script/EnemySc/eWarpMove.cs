@@ -38,7 +38,6 @@ namespace enemyMoveScript
 
         public override int Stay(GameObject obj)//待機状態
         {
-            Debug.Log(objRule.scrollSpeed);
             obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
             if (obj.transform.position.x < objRule.ScreenSize[1].x) return 1;
             return 0;

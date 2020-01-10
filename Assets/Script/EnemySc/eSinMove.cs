@@ -6,6 +6,7 @@ namespace enemyMoveScript
 {
     public class eSinMove : objStatusDefault
     {
+        float standTime;
         float wait;
         float rand;
         float transY;
@@ -36,12 +37,13 @@ namespace enemyMoveScript
             wait = (Mathf.Abs(objRule.ScreenSize[0].y-transform.position.y)< Mathf.Abs(objRule.ScreenSize[1].y - transform.position.y)?
                 Mathf.Abs(objRule.ScreenSize[0].y - transform.position.y)*0.9f: Mathf.Abs(objRule.ScreenSize[1].y - transform.position.y) * 0.9f);
             transY = transform.position.y;
+            standTime = 0f;
             return 1;
         }
 
         public override int Stay(GameObject obj)//待機状態
         {
-            Debug.Log(objRule.scrollSpeed);
+
             obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
             if (obj.transform.position.x < objRule.ScreenSize[1].x*1.1f) return 1;
             return 0;
@@ -49,9 +51,10 @@ namespace enemyMoveScript
 
         public override int Play(GameObject obj)//画面内行動
         {
+            standTime += Time.deltaTime;
             obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
             var trans = transform.position;
-            trans.y = transY +Mathf.Sin(rand + trans.x)*wait;
+            trans.y = transY +Mathf.Sin(rand + standTime) *wait;
             transform.position = trans;
             return 0;
         }

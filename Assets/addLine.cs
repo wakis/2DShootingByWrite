@@ -97,7 +97,7 @@ public class addLine : MonoBehaviour
             crossLine(lineList.Last());
             setLinePosition(Camera.main.ScreenToWorldPoint(mousePos));
         }
-        testobj.transform.position = centering(lineList.Last());
+        //testobj.transform.position = centering(lineList.Last());
     }
 
     boolVector crossLine(LineRenderer line)//交差の確認
@@ -207,6 +207,7 @@ public class addLine : MonoBehaviour
         lineList.Last().SetPositions(centerOfShape(lineList.Last()).ToArray());
         lineList.Last().useWorldSpace = false;
         lineList.Last().gameObject.AddComponent<PolygonCollider2D>();
+        lineList.Last().gameObject.AddComponent<linebullet>();
         var setter= lineList.Last().gameObject.AddComponent<setcol>();
         setter.setSize = 0.50f;
         //lineList.Last().gameObject.AddComponent<MeshFilter>().sharedMesh = makeMesh(lineList.Last());

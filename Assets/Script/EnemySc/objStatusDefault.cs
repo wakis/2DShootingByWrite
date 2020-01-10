@@ -75,4 +75,17 @@ public class objStatusDefault : MonoBehaviour
 
         return transPos;
     }
+
+    public virtual void OnHit(GameObject obj, GameObject objOpp)
+    {
+        if (objOpp.tag == "PlayerBullet")
+        {
+            outDestroy(obj);
+        }
+    }
+
+    protected virtual void outDestroy(GameObject obj)
+    {
+        Destroy(obj);
+    }
 }

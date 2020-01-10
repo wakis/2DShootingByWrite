@@ -24,7 +24,7 @@ public class TrackBullet : MonoBehaviour
             if (transform.position.x < objRule.player.transform.position.x) front = !front;
         }else
         {
-            if (transform.position.x > objRule.player.transform.position.x) front = !front;
+            if (transform.position.x > objRule.player.transform.position.x+1f) front = !front;
         }
         transform.position += vect * Time.deltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
         var ang = transform.eulerAngles;
