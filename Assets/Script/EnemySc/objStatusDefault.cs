@@ -86,6 +86,7 @@ public class objStatusDefault : MonoBehaviour
 
     protected virtual void outDestroy(GameObject obj)
     {
+        Camera.main.GetComponent<gameObj>().score += 20;
         Destroy(obj);
     }
 }

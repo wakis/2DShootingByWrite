@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class eBossMove : objStatusDefault
 {
+    public int MAXHP = 400;
+    int hp;
+    public int getHP{get{ return hp; }}
+    int n;
     float adTrans,sign,moveSpeed;
+    float turnTime;
     float[] wait = new float[2];
     [SerializeField]
     GameObject[] bullets = new GameObject[8];
@@ -36,6 +41,8 @@ public class eBossMove : objStatusDefault
         wait[0] = objRule.ScreenSize[0].y - obj.transform.position.y;
         wait[1] = objRule.ScreenSize[1].y - obj.transform.position.y;
         shotflag = false;
+        n = 0;
+        hp = MAXHP;
         return 1;
     }
 
@@ -78,7 +85,7 @@ public class eBossMove : objStatusDefault
             adTrans = Mathf.Abs(sign);
             sign /= adTrans;
         }
-        Attack_Patterner(0);
+        Attack_Patterner();
         return 0;
     }
     public override void Loss(GameObject obj)//消失時
@@ -90,48 +97,62 @@ public class eBossMove : objStatusDefault
         var o = Instantiate(obj, transform.position + new Vector3(-1f, transY, 0f), Quaternion.Euler(Vector3.zero));
         o.name = obj.name;
     }
-    protected void Attack_Patterner(int n)
+    protected void Attack_Patterner()
     {
-        bool endf = false;
+        turnTime += Time.deltaTime;
         switch (n)
         {
             case 0:
-                endf = shotEnemy();
+                n = shotEnemy();
                 break;
             case 1:
-                break;
             case 2:
+                n = shotSun();
                 break;
             case 3:
+                n = shotRush();
                 break;
             case 4:
+                n = shotCircle();
                 break;
             case 5:
+                n = shotSquare();
                 break;
             case 6:
-                break;
             case 7:
-                break;
             case 8:
-                break;
             case 9:
+                n = shotSim();
                 break;
             case 10:
-                break;
             case 11:
-                break;
             case 12:
-                break;
             case 13:
-                break;
             case 14:
-                break;
             case 15:
+                n = shotEnemy();
                 break;
             default:
+                //n = 0;
+                shotDefault();
+                if (turnTime>3f)
+                {
+                    if (hp>MAXHP/2)
+                    {
+                        n = Random.Range(0,10);
+                    }else
+                    {
+                        n = Random.Range(0, 16);
+                    }
+                    turnTime = 0f;
+                }
                 break;
         }
-        if (n == -1) shotflag = false;
+        if (n == -1)
+        {
+            shotflag = false;
+        }
+
     }
 
     bool shotDefault()
@@ -149,7 +170,7 @@ public class eBossMove : objStatusDefault
         return false;
     }
 
-    bool shotEnemy()
+    int shotEnemy()
     {
         if (!shotflag)
         {
@@ -158,19 +179,158 @@ public class eBossMove : objStatusDefault
         }
         for (int lp = -2; lp <= 2; lp++)
         {
-            Debug.Log(coolShotEnemy[lp + 2]);
             if (coolShotEnemy[lp + 2] < 0f && coolShotEnemy[lp + 2] > -10f)
             {
-                GeneratorNenemy(bullets[1], lp);
+                GeneratorNenemy(bullets[(int)Random.Range(0,bullets.Length)], lp);
                 coolShotEnemy[lp + 2] = -10f;
             }
             else
             {
-                coolTime -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= Time.deltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
-     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return true;
-        return false;
+     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return -1;
+        return n;
+    }//1
+
+    int shotSun()
+    {
+        if (!shotflag)
+        {
+            for (int lp = 0; lp < coolShotEnemy.Length; lp++)
+            {
+                if(n%2==0) coolShotEnemy[lp] = lp * 0.2f;
+                else coolShotEnemy[coolShotEnemy.Length-1-lp] = lp * 0.2f;
+            }
+            shotflag = !shotflag;
+        }
+        for (int lp = -2; lp <= 2; lp++)
+        {
+            if (coolShotEnemy[lp + 2] < 0f && coolShotEnemy[lp + 2] > -10f)
+            {
+                GeneratorNenemy(bullets[3], lp);
+                coolShotEnemy[lp + 2] = -10f;
+            }
+            else
+            {
+                coolShotEnemy[lp + 2] -= Time.deltaTime;
+            }
+        }
+        if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
+     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return -1;
+        return n;
+    }//2
+
+    int shotRush()
+    {
+        if (!shotflag)
+        {
+            for (int lp = 0; lp < coolShotEnemy.Length; lp++)
+            {
+                coolShotEnemy[lp] = Random.Range(0.2f, 0.8f);
+            }
+            shotflag = !shotflag;
+        }
+        for (int lp = -2; lp <= 2; lp++)
+        {
+            if (turnTime> coolShotEnemy[lp + 2])
+            {
+                coolShotEnemy[lp + 2] = turnTime + Random.Range(0.2f, 0.8f);
+                GeneratorNenemy(bullets[0], lp);
+            }
+        }
+        if ((turnTime>6f)) return -1;
+        return n;
+    }//1
+
+    int shotCircle()
+    {
+        if (!shotflag)
+        {
+            for (int lp = 0; lp < coolShotEnemy.Length; lp++) coolShotEnemy[lp] = Random.Range(0.1f, 1f);
+            shotflag = !shotflag;
+        }
+        for (int lp = -2; lp <= 2; lp++)
+        {
+            if (coolShotEnemy[lp + 2] < 0f && coolShotEnemy[lp + 2] > -10f)
+            {
+                GeneratorNenemy(bullets[7], lp);
+                if(Random.Range(0f,2f)<1f) coolShotEnemy[lp + 2] = -10f;
+                else coolShotEnemy[lp + 2] = Random.Range(0.2f, 0.6f);
+            }
+            else
+            {
+                coolShotEnemy[lp + 2] -= Time.deltaTime;
+            }
+        }
+        if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
+     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return -1;
+        return n;
+    }//1
+    int shotSquare()
+    {
+        if (!shotflag)
+        {
+            for (int lp = 0; lp < coolShotEnemy.Length; lp++) coolShotEnemy[lp] = Random.Range(0.1f, 1f);
+            shotflag = !shotflag;
+        }
+        for (int lp = -2; lp <= 2; lp++)
+        {
+            if (coolShotEnemy[lp + 2] < 0f && coolShotEnemy[lp + 2] > -10f)
+            {
+                GeneratorNenemy(bullets[5], lp);
+                if (Random.Range(0f, 2f) < 1f) coolShotEnemy[lp + 2] = -10f;
+                else coolShotEnemy[lp + 2] = Random.Range(0.2f, 0.6f);
+            }
+            else
+            {
+                coolShotEnemy[lp + 2] -= Time.deltaTime;
+            }
+        }
+        if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
+     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return -1;
+        return n;
+    }//1
+
+    int shotSim()
+    {
+        if (!shotflag)
+        {
+            for (int lp = 0; lp < coolShotEnemy.Length; lp++) coolShotEnemy[lp] = 0.5f;
+            shotflag = !shotflag;
+        }
+        for (int lp = -2; lp <= 2; lp++)
+        {
+            if (coolShotEnemy[lp + 2] < 0f && coolShotEnemy[lp + 2] > -10f)
+            {
+                GeneratorNenemy(bullets[n % 4], lp);
+                coolShotEnemy[lp + 2] = -10f;
+            }
+            else
+            {
+                coolShotEnemy[lp + 2] -= Time.deltaTime;
+            }
+        }
+        if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
+     coolShotEnemy[3] < -10f && coolShotEnemy[4] < -10f)) return -1;
+        return n;
+    }//4
+
+    public override void OnHit(GameObject obj, GameObject objOpp)
+    {
+        if (objOpp.tag == "PlayerBullet")
+        {
+            if (hp > 0)
+            {
+                Camera.main.GetComponent<gameObj>().score += 10;
+                hp--;
+                Destroy(objOpp);
+            }else
+            {
+                Camera.main.GetComponent<gameObj>().score += 1000;
+                outDestroy(obj);
+            }
+        }
     }
 }

@@ -27,6 +27,8 @@ public class player : MonoBehaviour
     Rigidbody2D rig;//移動制御用
     GAMERULE GameRule;//ゲームルール
 
+    public bool onPlay;//無敵時間の設定,被弾時に切り替える
+
     public void addPlayerBullet(GameObject obj)//lineで描いた弾の装填
     {
         pStatus.bullet.Add(obj);
@@ -42,15 +44,53 @@ public class player : MonoBehaviour
         rig.gravityScale = 0;
         GameRule = Camera.main.GetComponent<GAMERULE>();
         GameRule.Player = gameObject;
+        onPlay = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        setBullet();//弾の装填関連
-        transPosition();//プレイヤー移動関連
-        shot();//発砲関連
-        stockBullet();//line弾の視覚的整列
+        Debug.Log(onPlay);
+        if (GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x< GameRule.ScreenSize[1].x
+            && GameRule.ScreenSize[0].y <= transform.position.y && transform.position.y <= GameRule.ScreenSize[1].y) {
+            if (onPlay) {
+                shot();//発砲関連
+            }else
+            {
+                stan();//無敵時間兼
+            }
+            setBullet();//弾の装填関連
+            transPosition();//プレイヤー移動関連
+            
+            stockBullet();//line弾の視覚的整列
+        }else
+        {
+            tformVectZero();
+        }
+    }
+    void stan()
+    {
+        pStatus.coolTime -= Time.deltaTime;
+        if ((pStatus.coolTime < 3f * 6f / 6 && pStatus.coolTime > 3f*5f / 6)
+            || (pStatus.coolTime < 3f * 4f / 6 && pStatus.coolTime > 3f *3f/ 6)
+            || (pStatus.coolTime < 3f*2f / 6 && pStatus.coolTime>3f/6))
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1,1,1,0.2f);
+        }else
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+        }
+        if (pStatus.coolTime < 0f)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1);
+            onPlay = !onPlay;
+        }
+    }
+
+    void tformVectZero()
+    {
+        var pos = - transform.position.normalized;
+        rig.velocity = pos * Time.deltaTime * pStatus.speed;
     }
     void setBullet()
     {
@@ -116,26 +156,6 @@ public class player : MonoBehaviour
                 ver = 0;
             }
         }
-        /*if(0.9f*GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x < 0.9f * GameRule.ScreenSize[1].x)
-        {
-
-        }
-        else
-        {
-            if(transform.position.x/Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
-            {
-
-            }
-            //hor = -Mathf.Abs(Input.GetAxis("Horizontal")) * transform.position.x / Mathf.Abs(transform.position.x);
-        }
-        if(0.9f * GameRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * GameRule.ScreenSize[1].y)
-        {
-            ver = ;
-        }
-        else
-        {
-            ver = -Mathf.Abs(Input.GetAxis("Vertical")) * transform.position.y / Mathf.Abs(transform.position.y);
-        }*/
         rig.velocity = new Vector2(hor, ver) * Time.deltaTime * pStatus.speed;
     }
 
@@ -177,7 +197,14 @@ public class player : MonoBehaviour
                     Destroy(pStatus.bullet[lp]);
                     pStatus.bullet.Remove(pStatus.bullet[lp]);
                     if (pStatus.nowBullet== pStatus.bullet[lp]) { pStatus.nowBullet = nanoBullet; }
+                    return;
                 }
+            }
+            size *= 0.6f;
+            line.transform.localScale = size;
+            if (size.x < 0.01f)
+            {
+                Destroy(line.gameObject);
             }
         }
         else
@@ -236,6 +263,19 @@ public class player : MonoBehaviour
             var pos = trans.position;
             pos += (Vector3)difference * -2f * Time.deltaTime;
             trans.position = pos;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag=="BOSS" || collision.tag == "Enemy" || collision.tag == "EnemyBullet")
+        {
+            if (onPlay)
+            {
+                Camera.main.GetComponent<gameObj>().score -= 100;
+                pStatus.coolTime = 3f;
+                onPlay = !onPlay;
+            }
         }
     }
 }

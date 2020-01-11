@@ -200,10 +200,10 @@ MonoBehaviour:
   num: 0
   lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   stlineColor: {r: 1, g: 1, b: 1, a: 1}
-  edlineColor: {r: 1, g: 1, b: 0, a: 1}
+  edlineColor: {r: 0.19607843, g: 1, b: 0.74509805, a: 1}
   lineWidth: 0.1
   lineLimit: 100
-  test: {fileID: 2100000, guid: db4f05993351c144b9866f5484721c42, type: 2}
+  test: {fileID: 2100000, guid: dbfcbb8b72e92e44895c45525608922a, type: 2}
   testobj: {fileID: 0}
 --- !u!114 &1382510529
 MonoBehaviour:
@@ -217,8 +217,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc057bfadfa1b094da9e60362eeeb584, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}
+  timeText: {fileID: 0}
+  BOSSText: {fileID: 0}
   scrollSpeed: 1
   ScreenSize:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   player: {fileID: 0}
+  Boss: {fileID: 0}

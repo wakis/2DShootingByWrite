@@ -8,7 +8,8 @@ public class bulletImpact : MonoBehaviour
     public float speed;
     [System.NonSerialized]
     public Vector3 vect;
-    
+    gameObj objRule;
+    bool attackPlayer;
     public bulletImpact(float speed,Vector3 vector)
     {
         this.speed = speed;
@@ -17,6 +18,7 @@ public class bulletImpact : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        objRule = Camera.main.GetComponent<gameObj>();
         Rigidbody2D rig;
         if (GetComponent<Rigidbody2D>() != null)
         {
@@ -27,11 +29,28 @@ public class bulletImpact : MonoBehaviour
         }
         rig.bodyType = (RigidbodyType2D)1;
         rig.velocity = speed * vect;
+        attackPlayer = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (attackPlayer)
+        {
+            if (objRule.player.GetComponent<player>().onPlay)
+            {
+            }
+            else
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                vect = objRule.scoreText.transform.position - transform.position;
+                attackPlayer = !attackPlayer;
+            }
+        }
+        else
+        {
+            var trans = transform.position + vect * Time.deltaTime * 3f;
+            transform.position = trans;
+        }
     }
 }

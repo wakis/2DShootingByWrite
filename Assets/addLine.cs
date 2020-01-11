@@ -207,7 +207,7 @@ public class addLine : MonoBehaviour
         lineList.Last().SetPositions(centerOfShape(lineList.Last()).ToArray());
         lineList.Last().useWorldSpace = false;
         lineList.Last().gameObject.AddComponent<PolygonCollider2D>();
-        lineList.Last().gameObject.AddComponent<linebullet>();
+        lineList.Last().gameObject.AddComponent<linebullet>().destime = 0f;
         var setter= lineList.Last().gameObject.AddComponent<setcol>();
         setter.setSize = 0.50f;
         //lineList.Last().gameObject.AddComponent<MeshFilter>().sharedMesh = makeMesh(lineList.Last());
