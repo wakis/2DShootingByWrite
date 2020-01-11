@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class gameObj : MonoBehaviour
 {
+    static public int[] Score_TIme = new int[2];
     public TextMesh scoreText;
     [System.NonSerialized]
     public int score;
@@ -18,7 +20,8 @@ public class gameObj : MonoBehaviour
     
     public GameObject player;
     public GameObject Boss;
-    bool gameclear;
+    public bool gameclear;
+    public float clearaftime;
     private void Awake()
     {
         time = 0f;
@@ -44,6 +47,7 @@ public class gameObj : MonoBehaviour
     {
         ScreenSize[0] = Camera.main.ViewportToWorldPoint(new Vector3(0, 0,10));
         ScreenSize[1] = Camera.main.ViewportToWorldPoint(new Vector3(1, 1,10));
+        Score_TIme[0] = Score_TIme[1] = 0;
     }
     private void Update()
     {
@@ -59,7 +63,7 @@ public class gameObj : MonoBehaviour
             }
             scoreText.text = score.ToString();
             timeText.text = time.ToString("f2");
-            if (bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
+            if(Boss!=null&& bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
             {
                 bossHP = Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP;
                 string s = "";
@@ -69,10 +73,22 @@ public class gameObj : MonoBehaviour
                     s += "||";
                 }
                 BOSSText.text = s;
+            }else if (Boss==null)
+            {
+                clearaftime = 0f;
+                gameclear = true;
             }
         }else if(gameclear)
         {
-            BOSSText.text = "Game Clear\nPlease Push Any Button";
+            clearaftime += Time.deltaTime;
+            Score_TIme[0] = score;
+            Score_TIme[1] = (int)(time*10f);
+            player.GetComponent<player>().onPlay = false;
+            if (Input.anyKeyDown&& clearaftime>1f)
+            {
+                BOSSText.text = "Game Clear\nPlease Push Any Button";
+                SceneManager.LoadSceneAsync("Result");
+            }
         }
     }
 }

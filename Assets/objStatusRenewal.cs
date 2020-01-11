@@ -36,7 +36,7 @@ public class objStatusRenewal : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Camera.main.GetComponent<gameObj>().gameclear) Destroy(gameObject);
         if (nextSt != objStatus.NON)
         {
             objType.Renewal(gameObject);

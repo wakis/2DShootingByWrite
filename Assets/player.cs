@@ -45,6 +45,10 @@ public class player : MonoBehaviour
         GameRule = Camera.main.GetComponent<GAMERULE>();
         GameRule.Player = gameObject;
         onPlay = true;
+        if (selectScene.playerPos.x != 0f)
+        {
+            transform.position = selectScene.playerPos;
+        }
     }
 
     // Update is called once per frame
@@ -94,7 +98,7 @@ public class player : MonoBehaviour
     }
     void setBullet()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetButtonDown("Reload"))
         {
             if (pStatus.bullet.Count ==1&&pStatus.nowBullet == pStatus.bullet[0])
             {
@@ -161,7 +165,7 @@ public class player : MonoBehaviour
 
     void shot()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetButton("Shot"))
         {
             if (pStatus.coolTime <= 0f)//クールタイム有りの発砲
             {

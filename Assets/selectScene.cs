@@ -6,11 +6,11 @@ using UnityEngine.SceneManagement;
 public class selectScene : MonoBehaviour
 {
     [SerializeField]
-    Scene[] NormalScene;
+    string[] NormalScene;
     [SerializeField]
-    Scene[] HardScene;
+    string[] HardScene;
     [SerializeField]
-    Scene[] ExScene;
+    string[] ExScene;
     [SerializeField]
     Transform player;
     [SerializeField]
@@ -20,6 +20,8 @@ public class selectScene : MonoBehaviour
     public Color stlineColor; //線の色
     public Color edlineColor;
     public float lineWidth = 0.1f;//線の太さ
+
+    static public Vector2 playerPos;
 
     [SerializeField]
     Material meshMat;
@@ -45,6 +47,7 @@ public class selectScene : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerPos = player.position;
         int n = (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")>0?
             Mathf.CeilToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")): 
             Mathf.FloorToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"))) ;
@@ -88,7 +91,23 @@ public class selectScene : MonoBehaviour
                 }
             }
         }
-        
+        sceneSelect();
+    }
+    void sceneSelect()
+    {
+        if (Input.GetButtonDown("Shot"))
+        {
+            SceneManager.LoadSceneAsync(NormalScene[0]);
+            /*switch (pointNum)
+            {
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }*/
+        }
     }
     void selectPos(int n)
     {
