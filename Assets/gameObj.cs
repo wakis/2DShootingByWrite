@@ -93,7 +93,7 @@ public class gameObj : MonoBehaviour
         }
         if (!gameclear)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = "HP : "+score.ToString();
             timeText.text = time.ToString("f2");
             if(Boss!=null&& bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
             {
