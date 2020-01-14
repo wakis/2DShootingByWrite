@@ -48,6 +48,7 @@ public class stopBullet : MonoBehaviour
             }
             else
             {
+                gameObject.tag = "LostEnemyBullet";
                 vect = objRule.scoreText.transform.position - transform.position;
                 attackPlayer = !attackPlayer;
             }

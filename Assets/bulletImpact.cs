@@ -10,6 +10,7 @@ public class bulletImpact : MonoBehaviour
     public Vector3 vect;
     gameObj objRule;
     bool attackPlayer;
+    bool nano;
     public bulletImpact(float speed,Vector3 vector)
     {
         this.speed = speed;
@@ -30,6 +31,13 @@ public class bulletImpact : MonoBehaviour
         rig.bodyType = (RigidbodyType2D)1;
         rig.velocity = speed * vect;
         attackPlayer = true;
+        if (GetComponent<LineRenderer>())
+        {
+            nano = false;
+        }else
+        {
+            nano = true;
+        }
     }
 
     // Update is called once per frame
@@ -42,6 +50,7 @@ public class bulletImpact : MonoBehaviour
             }
             else
             {
+                gameObject.tag = "LostPlayerBullet";
                 GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 vect = objRule.scoreText.transform.position - transform.position;
                 attackPlayer = !attackPlayer;
@@ -49,11 +58,19 @@ public class bulletImpact : MonoBehaviour
         }
         else
         {
-            var trans = transform.position + vect * Time.deltaTime * 3f;
+            var trans = transform.position + vect * Time.deltaTime * 10f;
             transform.position = trans;
         }
         if (objRule.ScreenSize[0].x > transform.position.x || transform.position.x > objRule.ScreenSize[1].x ||
             objRule.ScreenSize[0].y > transform.position.y || transform.position.y > objRule.ScreenSize[1].y)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (nano&&(collision.tag == "BOSS" || collision.tag == "Enemy"))
         {
             Destroy(gameObject);
         }

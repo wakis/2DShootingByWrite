@@ -317,7 +317,7 @@ public class eBossMove : objStatusDefault
         return n;
     }//4
 
-    public override void OnHit(GameObject obj, GameObject objOpp)
+    public override void OnHit(GameObject obj, GameObject objOpp, GameObject[] bomEffect)
     {
         if (objOpp.tag == "PlayerBullet")
         {
@@ -328,6 +328,9 @@ public class eBossMove : objStatusDefault
                 Destroy(objOpp);
             }else
             {
+                var desobj = Instantiate(bomEffect[(int)Random.Range(0, bomEffect.Length)], transform.position, Quaternion.Euler(transform.eulerAngles));
+                desobj.GetComponent<desAnimeObject>().connect = true;
+                desobj.transform.localScale = transform.localScale*2f;
                 Camera.main.GetComponent<gameObj>().score += 1000;
                 outDestroy(obj);
             }

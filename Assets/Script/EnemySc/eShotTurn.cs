@@ -45,7 +45,7 @@ namespace enemyMoveScript
         {
             if (!Shot) {
                 obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed + speed);
-                if((obj.transform.position-objRule.player.transform.position).magnitude< (objRule.ScreenSize[1] - objRule.ScreenSize[0]).y / 2)
+                if((obj.transform.position-objRule.player.transform.position).magnitude< (objRule.ScreenSize[1] - objRule.ScreenSize[0]).y)
                 {
                     Instantiate(obj.GetComponent<objStatusRenewal>().bullet, obj.transform.position,
                         Quaternion.Euler(new Vector3(0f, 0f, Vector3.Angle(obj.transform.position, objRule.player.transform.position))));

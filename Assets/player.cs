@@ -28,6 +28,13 @@ public class player : MonoBehaviour
     GAMERULE GameRule;//ゲームルール
 
     public bool onPlay;//無敵時間の設定,被弾時に切り替える
+    AudioSource Audio;
+    [SerializeField]
+    AudioClip shotSE;
+    [SerializeField]
+    AudioClip hitSE;
+    [SerializeField]
+    AudioClip reloadSE;
 
     public void addPlayerBullet(GameObject obj)//lineで描いた弾の装填
     {
@@ -37,6 +44,7 @@ public class player : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        Audio = GetComponent<AudioSource>();
         //各ステータスの初期化
         pStatus.bullet = new List<GameObject>();
         pStatus.nowBullet = nanoBullet;
@@ -54,7 +62,6 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(onPlay);
         if (GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x< GameRule.ScreenSize[1].x
             && GameRule.ScreenSize[0].y <= transform.position.y && transform.position.y <= GameRule.ScreenSize[1].y) {
             if (onPlay) {
@@ -100,6 +107,8 @@ public class player : MonoBehaviour
     {
         if (Input.GetButtonDown("Reload"))
         {
+            Debug.Log("Reload");
+            Audio.PlayOneShot(reloadSE);
             if (pStatus.bullet.Count ==1&&pStatus.nowBullet == pStatus.bullet[0])
             {
                 if (pStatus.nowBullet != nanoBullet) Destroy(pStatus.nowBullet.gameObject);
@@ -169,11 +178,12 @@ public class player : MonoBehaviour
         {
             if (pStatus.coolTime <= 0f)//クールタイム有りの発砲
             {
+                Audio.PlayOneShot(shotSE);
                 var vect = transform.eulerAngles + new Vector3(0f, 0f, Random.Range(0f,0f));
                 var bullet = Instantiate(pStatus.nowBullet, transform.position, Quaternion.Euler(vect));
                 var inp = bullet.AddComponent<bulletImpact>();
                 bullet.tag = "PlayerBullet";
-                inp.speed = pStatus.speed/1000f * 4f;
+                inp.speed = pStatus.speed/1000f * 8f;
                 inp.vect = bullet.transform.right;
                 pStatus.coolTime = pStatus.setCoolTime;
                 if (pStatus.nowBullet.GetComponent<LineRenderer>() != null)//line弾を縮める
@@ -276,6 +286,7 @@ public class player : MonoBehaviour
         {
             if (onPlay)
             {
+                Audio.PlayOneShot(hitSE);
                 Camera.main.GetComponent<gameObj>().score -= 100;
                 pStatus.coolTime = 3f;
                 onPlay = !onPlay;

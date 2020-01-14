@@ -23,13 +23,14 @@ public class pushBullet : MonoBehaviour
         {
             if (objRule.player.GetComponent<player>().onPlay)
             {
-                transform.position += vect * Time.deltaTime;
+                transform.position += vect * Time.deltaTime*2f;
                 var ang = transform.eulerAngles;
                 ang.z += (int)Time.deltaTime * 36;
                 transform.eulerAngles = ang;
             }
             else
             {
+                gameObject.tag = "LostEnemyBullet";
                 vect = objRule.scoreText.transform.position - transform.position;
                 attackPlayer = !attackPlayer;
             }

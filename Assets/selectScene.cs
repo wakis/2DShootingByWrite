@@ -32,11 +32,19 @@ public class selectScene : MonoBehaviour
     LineRenderer line = new LineRenderer();
     GameObject lineobj;
 
+    [SerializeField]
+    AudioClip selectSE;
+    [SerializeField]
+    AudioClip doneSE;
+
+    AudioSource Audio;
+
     private void Awake()
     {
         pointNum = nextPoint= 0;
         player.position = point[pointNum].position;
         line = new LineRenderer();
+        Audio = GetComponent<AudioSource>();
     }
     // Start is called before the first frame update
     void Start()
@@ -53,14 +61,13 @@ public class selectScene : MonoBehaviour
             Mathf.FloorToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"))) ;
         if ((n > 0|| n < 0)&&Input.anyKeyDown)
         {
+            Audio.PlayOneShot(selectSE);
             selectPos(n);
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Start");
             AddLine_Obj();
-            Debug.Log("END");
         }
         if (Input.GetMouseButton(0))
         {
@@ -91,22 +98,31 @@ public class selectScene : MonoBehaviour
                 }
             }
         }
+        player.position = point[pointNum].position;
         sceneSelect();
     }
     void sceneSelect()
     {
+        Debug.Log(pointNum);
         if (Input.GetButtonDown("Shot"))
         {
-            SceneManager.LoadSceneAsync(NormalScene[0]);
-            /*switch (pointNum)
+            Audio.PlayOneShot(doneSE);
+            int n = 0;
+            switch (pointNum)
             {
                 case 1:
+                    n = (int)Random.Range(0, NormalScene.Length);
+                    SceneManager.LoadSceneAsync(NormalScene[n]);
                     break;
                 case 2:
+                    n = (int)Random.Range(0, HardScene.Length);
+                    SceneManager.LoadSceneAsync(HardScene[n]);
                     break;
                 case 3:
+                    n = (int)Random.Range(0, ExScene.Length);
+                    SceneManager.LoadSceneAsync(ExScene[n]);
                     break;
-            }*/
+            }
         }
     }
     void selectPos(int n)

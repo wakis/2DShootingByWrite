@@ -14,20 +14,17 @@ public class getScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(GetComponent<Collider2D>().enabled== gameRule.player.GetComponent<player>().onPlay)
-        {
-            GetComponent<Collider2D>().enabled = !GetComponent<Collider2D>().enabled;
-        }
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!gameRule.player.GetComponent<player>().onPlay)
         {
-            if (collision.tag == "BOSS" || collision.tag == "Enemy" || collision.tag == "EnemyBullet")
+            if (collision.tag == "LostEnemyBullet")
             {
                 gameRule.score -= 10;
-            }else if (collision.tag == "PlayerBullet")
+            }else if (collision.tag == "LostPlayerBullet")
             {
                 gameRule.score += 1;
             }

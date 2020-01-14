@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3657660520088390277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.86, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -121,6 +121,11 @@ MonoBehaviour:
     speed: 1
   bullet: {fileID: 1196042896336692735, guid: ed79716a4c5f1674eb2859ef50b49073, type: 3}
   objType: {fileID: 0}
+  bomEffect:
+  - {fileID: 6262688694748272945, guid: 0973654614e10a94f87b92d3cb0a7376, type: 3}
+  - {fileID: 8836812522921904437, guid: ee8f7f11ca558bc4fa83f04a6a5a6725, type: 3}
+  - {fileID: 4052048160918830865, guid: 6fa8953ea1eb88c49ae418e2f6d575bd, type: 3}
+  - {fileID: 5689803832884970295, guid: 9a10fd6844dd724498089a2c032e6656, type: 3}
 --- !u!61 &3657660520088390330
 BoxCollider2D:
   m_ObjectHideFlags: 0

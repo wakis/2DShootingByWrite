@@ -8,6 +8,8 @@ TagManager:
   - Boss
   - PlayerBullet
   - EnemyBullet
+  - LostPlayerBullet
+  - LostEnemyBullet
   layers:
   - Default
   - TransparentFX

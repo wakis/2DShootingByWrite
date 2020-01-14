@@ -38,6 +38,7 @@ namespace enemyMoveScript
                 Mathf.Abs(objRule.ScreenSize[0].y - transform.position.y)*0.9f: Mathf.Abs(objRule.ScreenSize[1].y - transform.position.y) * 0.9f);
             transY = transform.position.y;
             standTime = 0f;
+            coolTime=Random.Range(0f, 1f);
             return 1;
         }
 
@@ -56,7 +57,19 @@ namespace enemyMoveScript
             var trans = transform.position;
             trans.y = transY +Mathf.Sin(rand + standTime) *wait;
             transform.position = trans;
-            return 0;
+            
+            if (coolTime < 0f)
+            {
+                Instantiate(obj.GetComponent<objStatusRenewal>().bullet, obj.transform.position,
+                    Quaternion.Euler(new Vector3(0f, 0f, Vector3.Angle(obj.transform.position, objRule.player.transform.position))));
+                coolTime = setCoolTime;
+            }
+            else
+            {
+                coolTime -= Time.deltaTime;
+            }
+            if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x) return 1;
+                return 0;
         }
         public override void Loss(GameObject obj)//消失時
         {

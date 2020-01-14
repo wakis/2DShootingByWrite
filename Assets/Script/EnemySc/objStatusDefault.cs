@@ -76,10 +76,12 @@ public class objStatusDefault : MonoBehaviour
         return transPos;
     }
 
-    public virtual void OnHit(GameObject obj, GameObject objOpp)
+    public virtual void OnHit(GameObject obj, GameObject objOpp ,GameObject[] bomEffect)
     {
         if (objOpp.tag == "PlayerBullet")
         {
+            var desobj = Instantiate(bomEffect[(int)Random.Range(0, bomEffect.Length)], transform.position, Quaternion.Euler(transform.eulerAngles));
+            desobj.transform.localScale = transform.localScale*2f;
             outDestroy(obj);
         }
     }

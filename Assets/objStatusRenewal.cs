@@ -20,6 +20,8 @@ public class objStatusRenewal : MonoBehaviour
     Transform target;
     [SerializeField]
     objStatusDefault objType;
+    [SerializeField]
+    public GameObject[] bomEffect = new GameObject[4];
     private void Awake()
     {
         objType = (GetComponent<objStatusDefault>() != null ? GetComponent<objStatusDefault>() : new objStatusDefault());
@@ -69,6 +71,6 @@ public class objStatusRenewal : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        objType.OnHit(gameObject,collision.gameObject);
+        objType.OnHit(gameObject,collision.gameObject, bomEffect);
     }
 }

@@ -22,10 +22,12 @@ public class gameObj : MonoBehaviour
     public GameObject Boss;
     public bool gameclear;
     public float clearaftime;
+    Vector2[] textPos = new Vector2[2];
+    Vector2 BosstextPos;
     private void Awake()
     {
         time = 0f;
-        score = 0;
+        score = 500;
         gameclear = false;
         if (player == null && Boss == null)
         {
@@ -41,7 +43,12 @@ public class gameObj : MonoBehaviour
                 }
             }
         }
-
+        textPos[0] = scoreText.transform.position;
+        textPos[1] = timeText.transform.position;
+        BosstextPos = BOSSText.transform.position;
+        scoreText.transform.position += new Vector3(0f, textPos[0].y, 0f).normalized;
+        timeText.transform.position += new Vector3(0f, textPos[1].y, 0f).normalized;
+        BOSSText.transform.position += new Vector3(0f, BosstextPos.y, 0f).normalized;
     }
     private void Start()
     {
@@ -51,16 +58,41 @@ public class gameObj : MonoBehaviour
     }
     private void Update()
     {
+        if (player == null || player.tag != "Player")
+        {
+            Awake();
+        }
+        if (Boss != null)
+        {
+            time += Time.deltaTime;
+            if (Boss.transform.position.x<ScreenSize[1].x*1.1f)
+            {
+                if (BOSSText.transform.position.y< BosstextPos.y)
+                {
+                    BOSSText.transform.position -= new Vector3(0f, BosstextPos.y, 0f).normalized *Time.deltaTime*2f;
+                }else if(BOSSText.transform.position.y != BosstextPos.y)
+                {
+                    BOSSText.transform.position = (Vector3)BosstextPos * 1f;
+                }
+            }
+        }
+        if (time<1f)
+        {
+            if (time < 0.5f)
+            {
+                scoreText.transform.position -= new Vector3(0f, textPos[0].y, 0f).normalized * Time.deltaTime * 2f;
+            }
+            else
+            {
+                timeText.transform.position -= new Vector3(0f, textPos[1].y, 0f).normalized * Time.deltaTime * 2f;
+            }
+        }else if(scoreText.transform.position.y!= textPos[0].y|| timeText.transform.position.y!= textPos[1].y)
+        {
+            scoreText.transform.position = (Vector3)textPos[0] * 1f;
+            timeText.transform.position = (Vector3)textPos[1] * 1f;
+        }
         if (!gameclear)
         {
-            if (player == null || player.tag != "Player")
-            {
-                Awake();
-            }
-            if (Boss != null)
-            {
-                time += Time.deltaTime;
-            }
             scoreText.text = score.ToString();
             timeText.text = time.ToString("f2");
             if(Boss!=null&& bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
@@ -78,16 +110,31 @@ public class gameObj : MonoBehaviour
                 clearaftime = 0f;
                 gameclear = true;
             }
-        }else if(gameclear)
+
+            if (score < 0f)
+            {
+                clearaftime += Time.deltaTime;
+                Score_TIme[0] = score;
+                Score_TIme[1] = (int)(time * 10f);
+                player.GetComponent<player>().onPlay = false;
+                if (clearaftime > 2f)
+                {
+                    SceneManager.LoadSceneAsync("Result");
+                }
+            }
+        }
+        else if(gameclear)
         {
             clearaftime += Time.deltaTime;
             Score_TIme[0] = score;
             Score_TIme[1] = (int)(time*10f);
             player.GetComponent<player>().onPlay = false;
-            if (Input.anyKeyDown&& clearaftime>1f)
-            {
+            if (clearaftime > 1f) {
                 BOSSText.text = "Game Clear\nPlease Push Any Button";
-                SceneManager.LoadSceneAsync("Result");
+                if (Input.anyKeyDown)
+                {
+                    SceneManager.LoadSceneAsync("Result");
+                }
             }
         }
     }
