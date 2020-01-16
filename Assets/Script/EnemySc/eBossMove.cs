@@ -60,8 +60,8 @@ public class eBossMove : objStatusDefault
 
         if (adTrans>0.1f)
         {
-            obj.transform.position += new Vector3(0, moveSpeed * sign*Time.deltaTime, 0);
-            adTrans -= moveSpeed * Time.deltaTime;
+            obj.transform.position += new Vector3(0, moveSpeed * sign*objRule.gameDeltaTime, 0);
+            adTrans -= moveSpeed * objRule.gameDeltaTime;
         }
         else
         {
@@ -99,7 +99,7 @@ public class eBossMove : objStatusDefault
     }
     protected void Attack_Patterner()
     {
-        turnTime += Time.deltaTime;
+        turnTime += objRule.gameDeltaTime;
         switch (n)
         {
             case 0:
@@ -165,7 +165,7 @@ public class eBossMove : objStatusDefault
         }
         else
         {
-            coolTime -= Time.deltaTime;
+            coolTime -= objRule.gameDeltaTime;
         }
         return false;
     }
@@ -186,7 +186,7 @@ public class eBossMove : objStatusDefault
             }
             else
             {
-                coolShotEnemy[lp + 2] -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= objRule.gameDeltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
@@ -214,7 +214,7 @@ public class eBossMove : objStatusDefault
             }
             else
             {
-                coolShotEnemy[lp + 2] -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= objRule.gameDeltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
@@ -261,7 +261,7 @@ public class eBossMove : objStatusDefault
             }
             else
             {
-                coolShotEnemy[lp + 2] -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= objRule.gameDeltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
@@ -285,7 +285,7 @@ public class eBossMove : objStatusDefault
             }
             else
             {
-                coolShotEnemy[lp + 2] -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= objRule.gameDeltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&
@@ -309,7 +309,7 @@ public class eBossMove : objStatusDefault
             }
             else
             {
-                coolShotEnemy[lp + 2] -= Time.deltaTime;
+                coolShotEnemy[lp + 2] -= objRule.gameDeltaTime;
             }
         }
         if ((coolShotEnemy[0] < -10f && coolShotEnemy[1] < -10f && coolShotEnemy[2] < -10f &&

@@ -24,6 +24,16 @@ public class gameObj : MonoBehaviour
     public float clearaftime;
     Vector2[] textPos = new Vector2[2];
     Vector2 BosstextPos;
+    [System.NonSerialized]
+    public bool onConcentration;
+    [System.NonSerialized]
+    public float gradationTimePer;
+    [System.NonSerialized]
+    public float gameDeltaTime;
+    [SerializeField]
+    float TimePer;
+    public float getTimePer { get { return TimePer; } }
+
     private void Awake()
     {
         time = 0f;
@@ -49,6 +59,9 @@ public class gameObj : MonoBehaviour
         scoreText.transform.position += new Vector3(0f, textPos[0].y, 0f).normalized;
         timeText.transform.position += new Vector3(0f, textPos[1].y, 0f).normalized;
         BOSSText.transform.position += new Vector3(0f, BosstextPos.y, 0f).normalized;
+        gradationTimePer = 1f;
+        onConcentration = false;
+        gameDeltaTime = 0f;
     }
     private void Start()
     {
@@ -64,12 +77,12 @@ public class gameObj : MonoBehaviour
         }
         if (Boss != null)
         {
-            time += Time.deltaTime;
+            timeKeeper();
             if (Boss.transform.position.x<ScreenSize[1].x*1.1f)
             {
                 if (BOSSText.transform.position.y< BosstextPos.y)
                 {
-                    BOSSText.transform.position -= new Vector3(0f, BosstextPos.y, 0f).normalized *Time.deltaTime*2f;
+                    BOSSText.transform.position -= new Vector3(0f, BosstextPos.y, 0f).normalized *gameDeltaTime*2f;
                 }else if(BOSSText.transform.position.y != BosstextPos.y)
                 {
                     BOSSText.transform.position = (Vector3)BosstextPos * 1f;
@@ -80,11 +93,11 @@ public class gameObj : MonoBehaviour
         {
             if (time < 0.5f)
             {
-                scoreText.transform.position -= new Vector3(0f, textPos[0].y, 0f).normalized * Time.deltaTime * 2f;
+                scoreText.transform.position -= new Vector3(0f, textPos[0].y, 0f).normalized * gameDeltaTime * 2f;
             }
             else
             {
-                timeText.transform.position -= new Vector3(0f, textPos[1].y, 0f).normalized * Time.deltaTime * 2f;
+                timeText.transform.position -= new Vector3(0f, textPos[1].y, 0f).normalized * gameDeltaTime * 2f;
             }
         }else if(scoreText.transform.position.y!= textPos[0].y|| timeText.transform.position.y!= textPos[1].y)
         {
@@ -137,5 +150,32 @@ public class gameObj : MonoBehaviour
                 }
             }
         }
+    }
+
+    void timeKeeper()
+    {
+        if (onConcentration)
+        {
+            if (gradationTimePer > TimePer)
+            {
+                gradationTimePer -= (1f - TimePer) * gradationTimePer * Time.deltaTime * 4f;
+            }
+            else if (gradationTimePer != TimePer)
+            {
+                gradationTimePer = TimePer;
+            }
+        }else
+        {
+            if (gradationTimePer < 1f)
+            {
+                gradationTimePer += TimePer*1/gradationTimePer* Time.deltaTime*8f;
+            }
+            else if(gradationTimePer != 1f)
+            {
+                gradationTimePer = 1f;
+            }
+        }
+        gameDeltaTime = gradationTimePer * Time.deltaTime;
+        time += gameDeltaTime;
     }
 }

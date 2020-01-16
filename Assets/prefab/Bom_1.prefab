@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6262688694748272950}
   - component: {fileID: 437915873}
   - component: {fileID: 1485728008}
+  - component: {fileID: 1743303108540169866}
   m_Layer: 0
   m_Name: Bom_1
   m_TagString: Untagged
@@ -211,3 +212,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1743303108540169866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6262688694748272945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1f615685c417af438c125ca2aec807f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -69,7 +69,7 @@ namespace enemyMoveScript
                     {
                         Destroy(line);
                     }
-                    coolTime -= Time.deltaTime;
+                    coolTime -= objRule.gameDeltaTime;
                 }
             }
             if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x) return 1;

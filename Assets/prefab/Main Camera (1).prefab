@@ -154,6 +154,7 @@ MonoBehaviour:
   Boss: {fileID: 0}
   gameclear: 0
   clearaftime: 0
+  TimePer: 0.1
 --- !u!82 &6775993503376825587
 AudioSource:
   m_ObjectHideFlags: 0

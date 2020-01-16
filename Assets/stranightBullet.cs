@@ -21,7 +21,7 @@ public class stranightBullet : MonoBehaviour
         {
             if (objRule.player.GetComponent<player>().onPlay)
             {
-                transform.position -= Vector3.right * Time.deltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
+                transform.position -= Vector3.right * objRule.gameDeltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
             }
             else
             {
@@ -32,7 +32,7 @@ public class stranightBullet : MonoBehaviour
         }
         else
         {
-            var trans = transform.position + vect * Time.deltaTime * 3f;
+            var trans = transform.position + vect * objRule.gameDeltaTime * 3f;
             transform.position = trans;
         }
         if (objRule.ScreenSize[0].x > transform.position.x || transform.position.x > objRule.ScreenSize[1].x ||

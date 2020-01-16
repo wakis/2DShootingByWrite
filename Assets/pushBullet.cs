@@ -23,9 +23,9 @@ public class pushBullet : MonoBehaviour
         {
             if (objRule.player.GetComponent<player>().onPlay)
             {
-                transform.position += vect * Time.deltaTime*2f;
+                transform.position += vect * objRule.gameDeltaTime*2f;
                 var ang = transform.eulerAngles;
-                ang.z += (int)Time.deltaTime * 36;
+                ang.z += (int)objRule.gameDeltaTime * 36;
                 transform.eulerAngles = ang;
             }
             else
@@ -37,7 +37,7 @@ public class pushBullet : MonoBehaviour
         }
         else
         {
-            var trans = transform.position + vect * Time.deltaTime * 3f;
+            var trans = transform.position + vect * objRule.gameDeltaTime * 3f;
             transform.position = trans;
         }
 

@@ -33,25 +33,34 @@ public class addLine : MonoBehaviour
     public Material test;
     public GameObject testobj;
 
+    gameObj objRule;
+    
+    public bool canAddLine;
+
     // Start is called before the first frame update
     void Start()
     {
-        Player = Camera.main.GetComponent<GAMERULE>().Player.GetComponent<player>();
+        canAddLine = true;
+        objRule = Camera.main.GetComponent<gameObj>();
+        Player = objRule.player.GetComponent<player>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        Debug.Log(objRule.onConcentration);
+        if (Input.GetMouseButtonDown(0)&&canAddLine)
         {
+            objRule.onConcentration = true;
             AddLine_Obj();
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && canAddLine)
         {
             AddPositionToLineRend();
         }
-        if (Input.GetMouseButtonUp(0))
+        if ((Input.GetMouseButtonUp(0)&& objRule.onConcentration) || (objRule.onConcentration&&!canAddLine))
         {
+            objRule.onConcentration = false;
             if (lineList.Last().positionCount < 3)//要素数不足
             {
                 Destroy(lineList.Last().gameObject);
@@ -97,7 +106,6 @@ public class addLine : MonoBehaviour
             crossLine(lineList.Last());
             setLinePosition(Camera.main.ScreenToWorldPoint(mousePos));
         }
-        //testobj.transform.position = centering(lineList.Last());
     }
 
     boolVector crossLine(LineRenderer line)//交差の確認
@@ -137,12 +145,6 @@ public class addLine : MonoBehaviour
             float at= (pos[1].y - pos[0].y) / (pos[1].x - pos[0].x);//2本目変化率
             float x = (af * poins[0].x - poins[0].y - at * pos[0].x + pos[0].y) / (af - at);
             float y = af * (x - poins[0].x) + poins[0].y;
-            if (//min_max[0].x < x && x < min_max[1].x &&
-                //min_max[0].y < y && y < min_max[1].y
-                min_max[0].y == y * x / min_max[0].x)
-            {
-               Debug.Log(x+":"+y);
-            }
         }
         return blVect;
     }

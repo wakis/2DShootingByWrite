@@ -25,7 +25,7 @@ public class player : MonoBehaviour
     PlayerStatus pStatus = new PlayerStatus();//ステータス
 
     Rigidbody2D rig;//移動制御用
-    GAMERULE GameRule;//ゲームルール
+    gameObj objRule;//ゲームルール
 
     public bool onPlay;//無敵時間の設定,被弾時に切り替える
     AudioSource Audio;
@@ -50,8 +50,8 @@ public class player : MonoBehaviour
         pStatus.nowBullet = nanoBullet;
         rig = GetComponent<Rigidbody2D>();
         rig.gravityScale = 0;
-        GameRule = Camera.main.GetComponent<GAMERULE>();
-        GameRule.Player = gameObject;
+        objRule = Camera.main.GetComponent<gameObj>();
+        objRule.player = gameObject;
         onPlay = true;
         if (selectScene.playerPos.x != 0f)
         {
@@ -62,8 +62,8 @@ public class player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameRule.ScreenSize[0].x<transform.position.x&& transform.position.x< GameRule.ScreenSize[1].x
-            && GameRule.ScreenSize[0].y <= transform.position.y && transform.position.y <= GameRule.ScreenSize[1].y) {
+        if (objRule.ScreenSize[0].x<transform.position.x&& transform.position.x< objRule.ScreenSize[1].x
+            && objRule.ScreenSize[0].y <= transform.position.y && transform.position.y <= objRule.ScreenSize[1].y) {
             if (onPlay) {
                 shot();//発砲関連
             }else
@@ -81,7 +81,7 @@ public class player : MonoBehaviour
     }
     void stan()
     {
-        pStatus.coolTime -= Time.deltaTime;
+        pStatus.coolTime -= objRule.gameDeltaTime;
         if ((pStatus.coolTime < 3f * 6f / 6 && pStatus.coolTime > 3f*5f / 6)
             || (pStatus.coolTime < 3f * 4f / 6 && pStatus.coolTime > 3f *3f/ 6)
             || (pStatus.coolTime < 3f*2f / 6 && pStatus.coolTime>3f/6))
@@ -101,7 +101,7 @@ public class player : MonoBehaviour
     void tformVectZero()
     {
         var pos = - transform.position.normalized;
-        rig.velocity = pos * Time.deltaTime * pStatus.speed;
+        rig.velocity = pos * objRule.gameDeltaTime * pStatus.speed;
     }
     void setBullet()
     {
@@ -142,13 +142,13 @@ public class player : MonoBehaviour
     {
         float hor = Input.GetAxis("Horizontal"), ver = Input.GetAxis("Vertical");
         if (Mathf.Abs(hor)>0&&
-            !(0.9f * GameRule.ScreenSize[0].x < transform.position.x && transform.position.x < 0.9f * GameRule.ScreenSize[1].x))
+            !(0.9f * objRule.ScreenSize[0].x < transform.position.x && transform.position.x < 0.9f * objRule.ScreenSize[1].x))
         {
             var trans = transform.position;
-            if (transform.position.x < 0.9f * GameRule.ScreenSize[0].x)
-                trans.x = 0.9f * GameRule.ScreenSize[0].x;
+            if (transform.position.x < 0.9f * objRule.ScreenSize[0].x)
+                trans.x = 0.9f * objRule.ScreenSize[0].x;
             else
-                trans.x = 0.9f * GameRule.ScreenSize[1].x;
+                trans.x = 0.9f * objRule.ScreenSize[1].x;
             transform.position = trans;
             if (transform.position.x / Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
             {
@@ -156,20 +156,20 @@ public class player : MonoBehaviour
             }
         }
         if (Mathf.Abs(ver) > 0&&
-            !(0.9f * GameRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * GameRule.ScreenSize[1].y))
+            !(0.9f * objRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * objRule.ScreenSize[1].y))
         {
             var trans = transform.position;
-            if (transform.position.y < 0.9f * GameRule.ScreenSize[0].y)
-                trans.y = 0.9f * GameRule.ScreenSize[0].y;
+            if (transform.position.y < 0.9f * objRule.ScreenSize[0].y)
+                trans.y = 0.9f * objRule.ScreenSize[0].y;
             else
-                trans.y = 0.9f * GameRule.ScreenSize[1].y;
+                trans.y = 0.9f * objRule.ScreenSize[1].y;
             transform.position = trans;
             if (transform.position.y / Mathf.Abs(transform.position.y) == ver / Mathf.Abs(ver))
             {
                 ver = 0;
             }
         }
-        rig.velocity = new Vector2(hor, ver) * Time.deltaTime * pStatus.speed;
+        rig.velocity = new Vector2(hor, ver) * objRule.gameDeltaTime * pStatus.speed;
     }
 
     void shot()
@@ -193,7 +193,7 @@ public class player : MonoBehaviour
             }
             
         }
-        if (pStatus.coolTime > 0f) pStatus.coolTime -= Time.deltaTime;
+        if (pStatus.coolTime > 0f) pStatus.coolTime -= objRule.gameDeltaTime;
     }
 
     ///ここに遠隔リサイズ処理入れる
@@ -269,13 +269,13 @@ public class player : MonoBehaviour
         }else if(difference.magnitude < 1f)//少しずつ移動させる
         {
             var pos = trans.position;
-            pos += (Vector3)difference.normalized * -2f * Time.deltaTime;
+            pos += (Vector3)difference.normalized * -2f * objRule.gameDeltaTime;
             trans.position = pos;
         }
         else//離れてるほど大きく移動させる
         {
             var pos = trans.position;
-            pos += (Vector3)difference * -2f * Time.deltaTime;
+            pos += (Vector3)difference * -2f * objRule.gameDeltaTime;
             trans.position = pos;
         }
     }

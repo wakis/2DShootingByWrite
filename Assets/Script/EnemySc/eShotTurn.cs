@@ -54,7 +54,7 @@ namespace enemyMoveScript
             }
             else
             {
-                obj.transform.position += Vector3.right * (objRule.scrollSpeed + speed)*Time.deltaTime/2f;
+                obj.transform.position += Vector3.right * (objRule.scrollSpeed + speed)*objRule.gameDeltaTime/2f;
                 if (coolTime < 0f)
                 {
                     Instantiate(obj.GetComponent<objStatusRenewal>().bullet, obj.transform.position,
@@ -63,7 +63,7 @@ namespace enemyMoveScript
                 }
                 else
                 {
-                    coolTime -= Time.deltaTime;
+                    coolTime -= objRule.gameDeltaTime;
                 }
             }
             if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x

@@ -58,7 +58,7 @@ public class bulletImpact : MonoBehaviour
         }
         else
         {
-            var trans = transform.position + vect * Time.deltaTime * 10f;
+            var trans = transform.position + vect * objRule.gameDeltaTime * 10f;
             transform.position = trans;
         }
         if (objRule.ScreenSize[0].x > transform.position.x || transform.position.x > objRule.ScreenSize[1].x ||

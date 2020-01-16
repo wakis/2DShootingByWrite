@@ -27,7 +27,6 @@ public class desAnimeObject : MonoBehaviour
 
     public void destroy_AnimationObject()
     {
-        Debug.Log("Dess");
         if (connect)
         {
             Instantiate(connectEffect, transform.position + new Vector3(Random.Range(-1f, 1f), Random.Range(-2f, 2f), 0f)
