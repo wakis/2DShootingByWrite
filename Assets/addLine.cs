@@ -31,7 +31,13 @@ public class addLine : MonoBehaviour
     public int lineLimit = 100;
 
     public Material test;
-    public GameObject testobj;
+    public SpriteRenderer filter;
+    [SerializeField]
+    Color ConcentCol;
+    [SerializeField]
+    Color HitCol;
+    Color setCol;
+
 
     gameObj objRule;
     
@@ -43,11 +49,13 @@ public class addLine : MonoBehaviour
         canAddLine = true;
         objRule = Camera.main.GetComponent<gameObj>();
         Player = objRule.player.GetComponent<player>();
+        Concentration();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Concentration();
         Debug.Log(objRule.onConcentration);
         if (Input.GetMouseButtonDown(0)&&canAddLine)
         {
@@ -60,6 +68,7 @@ public class addLine : MonoBehaviour
         }
         if ((Input.GetMouseButtonUp(0)&& objRule.onConcentration) || (objRule.onConcentration&&!canAddLine))
         {
+            filter.transform.position = Vector3.zero;
             objRule.onConcentration = false;
             if (lineList.Last().positionCount < 3)//要素数不足
             {
@@ -106,6 +115,7 @@ public class addLine : MonoBehaviour
             crossLine(lineList.Last());
             setLinePosition(Camera.main.ScreenToWorldPoint(mousePos));
         }
+        filter.transform.position = centering(lineList.Last());
     }
 
     boolVector crossLine(LineRenderer line)//交差の確認
@@ -138,8 +148,6 @@ public class addLine : MonoBehaviour
                 line.GetPosition(lp),
                 line.GetPosition(lp+1)
             };
-            //angle = Angr(poins[0], pos[0]) + Angr(poins[1], pos[0])
-            //+ Angr(poins[1], pos[1]) + Angr(poins[0], pos[1]);
 
             float af = (poins[1].y - poins[0].y) / (poins[1].x - poins[0].x);//1本目変化率
             float at= (pos[1].y - pos[0].y) / (pos[1].x - pos[0].x);//2本目変化率
@@ -224,41 +232,6 @@ public class addLine : MonoBehaviour
     }
     Mesh TestmakeMesh()
     {
-        /*List<Vector3> fillMeshPoints = new List<Vector3>();
-        for (int lp=0;lp<lineList.Last().positionCount;lp++)
-        {
-            fillMeshPoints.Add(new Vector2(lineList.Last().GetPosition(lp).x,0f));
-            if (lp!= lineList.Last().positionCount-1)
-            {
-                fillMeshPoints.Add(lineList.Last().GetPosition(lp));
-            }
-            else
-            {
-                fillMeshPoints.Add(lineList.Last().GetPosition(0));
-            }
-        }
-
-        int numTriangles = (lineList.Last().positionCount - 1) * 2;
-        int[] triangles = new int[numTriangles * 3];
-        int lpInFor = 0;
-        for (int lp=0;lp<numTriangles;lp+=2)
-        {
-            Debug.Log(lpInFor+":"+ numTriangles * 3+":"+ fillMeshPoints.Count);
-            // lower left triangle
-            triangles[lpInFor++] = 2 * lp;
-            triangles[lpInFor++] = 2 * lp + 1;
-            triangles[lpInFor++] = 2 * lp + 2;
-            // upper right triangle - you might need to experiment what are the correct indices
-            triangles[lpInFor++] = 2 * lp + 1;
-            triangles[lpInFor++] = 2 * lp + 2;
-            triangles[lpInFor++] = 2 * lp + 3;
-        }
-        Mesh fillMesh = new Mesh();
-        fillMesh.vertices = fillMeshPoints.ToArray();
-        fillMesh.triangles = triangles;
-        return fillMesh;
-
-        */
         List<Vector3> linepos = new List<Vector3>();
         List<int> triangles = new List<int>();
         linepos.Add(centering(lineList.Last()));
@@ -270,18 +243,12 @@ public class addLine : MonoBehaviour
                 triangles.Add(0);
                 triangles.Add(lp);
                 triangles.Add(lp + 1);
-                //triangles.Add(0);
-                //triangles.Add(lp+1);
-                //triangles.Add(lp);
             }
             else
             {
                 triangles.Add(0);
                 triangles.Add(lineList.Last().positionCount);
                 triangles.Add(1);
-                //triangles.Add(0);
-                //triangles.Add(1);
-                //triangles.Add(lineList.Last().positionCount);
             }
         }
         
@@ -291,34 +258,7 @@ public class addLine : MonoBehaviour
         return mesh;
     }
 
-    /*Mesh makeMesh(LineRenderer line)//ラインに沿ってメッシュを点在させえる
-    {
-        int mass = Mathf.FloorToInt(getMassConcentration(line));//点の数
-        List<Vector3> points = new List<Vector3>();//点の位置
-        List<int> index = new List<int>();//点のインデックス
-        List<float> linePosListX = new List<float>();
-        List<float> linePosListY = new List<float>();//線の点要素(x,y)
-        for (int lp = 0; lp < line.positionCount; lp++)//点要素の合計から平均化
-        {
-            linePosListX.Add(line.GetPosition(lp).x);
-            linePosListY.Add(line.GetPosition(lp).y);
-        }
-
-        Vector2[] floor_ceiling =
-        {
-            getFloorAndCeiling(linePosListX.ToArray()),//[0]Xの最大xと最小y
-            getFloorAndCeiling(linePosListY.ToArray())//[1]Yの最大xと最小y
-        };
-        for (int lp=0;lp< mass;lp++)
-        {
-            do
-            {
-                Vector2 randPoint = new Vector2(Random.Range(floor_ceiling[0].y, floor_ceiling[0].x),
-                    Random.Range(floor_ceiling[1].y, floor_ceiling[1].x));
-            } while ();
-        }
-    }*/
-
+    
     Vector2 getFloorAndCeiling(float[] array)//最大xと最小yを返す
     {
         Vector2 num = new Vector2(array[0], array[0]);
@@ -423,5 +363,21 @@ public class addLine : MonoBehaviour
             //n *= -1f;
         }
         return n;
+    }
+    void Concentration()
+    {
+        if (setCol.a != (1f - objRule.gradationTimePer)/2)
+        {
+            if (objRule.player.GetComponent<player>().onPlay)
+            {
+                setCol = ConcentCol;
+            }
+            else
+            {
+                setCol = HitCol;
+            }
+            setCol.a = (1f - objRule.gradationTimePer) / 2;
+            filter.color = setCol;
+        }
     }
 }

@@ -107,6 +107,7 @@ public class gameObj : MonoBehaviour
         if (!gameclear)
         {
             scoreText.text = "HP : "+score.ToString();
+            if (score < 0f) scoreText.text = "HP : "+"0";
             timeText.text = time.ToString("f2");
             if(Boss!=null&& bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
             {
@@ -154,6 +155,10 @@ public class gameObj : MonoBehaviour
 
     void timeKeeper()
     {
+        if (gradationTimePer <= 0f)
+        {
+            gradationTimePer = 0.1f;
+        }
         if (onConcentration)
         {
             if (gradationTimePer > TimePer)
@@ -177,5 +182,10 @@ public class gameObj : MonoBehaviour
         }
         gameDeltaTime = gradationTimePer * Time.deltaTime;
         time += gameDeltaTime;
+    }
+
+    public void shockTime()
+    {
+        gradationTimePer = 0f;
     }
 }
