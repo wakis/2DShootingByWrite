@@ -56,7 +56,6 @@ public class addLine : MonoBehaviour
     void Update()
     {
         Concentration();
-        Debug.Log(objRule.onConcentration);
         if (Input.GetMouseButtonDown(0)&&canAddLine)
         {
             objRule.onConcentration = true;

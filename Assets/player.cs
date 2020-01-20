@@ -105,36 +105,41 @@ public class player : MonoBehaviour
     }
     void setBullet()
     {
-        if (Input.GetButtonDown("Reload"))
+        if (Input.GetButtonDown("Reload")&&pStatus.nowBullet == nanoBullet && pStatus.bullet.Count > 1)
         {
-            Debug.Log("Reload");
-            Audio.PlayOneShot(reloadSE);
-            if (pStatus.bullet.Count ==1&&pStatus.nowBullet == pStatus.bullet[0])
-            {
-                if (pStatus.nowBullet != nanoBullet) Destroy(pStatus.nowBullet.gameObject);
-                pStatus.bullet.Remove(pStatus.bullet[0]);
-                pStatus.nowBullet = nanoBullet;
-            }
-            else if (pStatus.nowBullet == nanoBullet&& pStatus.bullet.Count > 0)//line弾初期装填
-            {
-                pStatus.nowBullet = pStatus.bullet[0];
-            }
-            else if (pStatus.bullet.Count > 0)//line弾装填
-            {
-                Destroy(pStatus.bullet[0]);
-                pStatus.bullet.Remove(pStatus.bullet[0]);
-                pStatus.nowBullet = pStatus.bullet[0];
-            }
-            else//最小値の弾装填
-            {
-                if(pStatus.nowBullet != nanoBullet) Destroy(pStatus.nowBullet.gameObject);
-                pStatus.nowBullet = nanoBullet;
-            }
+            ReLoad();
         }
         if (pStatus.bullet.Count>pStatus.bulletnum)//line弾が制限以上言った場合、古い物から破棄
         {
             Destroy(pStatus.bullet[0]);
             pStatus.bullet.Remove(pStatus.bullet[0]);
+            pStatus.nowBullet = nanoBullet;
+        }
+    }
+
+    void ReLoad()
+    {
+        Debug.Log("Reload");
+        Audio.PlayOneShot(reloadSE);
+        if (pStatus.bullet.Count == 1 && pStatus.nowBullet == pStatus.bullet[0])
+        {
+            if (pStatus.nowBullet != nanoBullet) Destroy(pStatus.nowBullet.gameObject);
+            pStatus.bullet.Remove(pStatus.bullet[0]);
+            pStatus.nowBullet = nanoBullet;
+        }
+        else if (pStatus.nowBullet == nanoBullet && pStatus.bullet.Count > 0)//line弾初期装填
+        {
+            pStatus.nowBullet = pStatus.bullet[0];
+        }
+        else if (pStatus.bullet.Count > 0)//line弾装填
+        {
+            Destroy(pStatus.bullet[0]);
+            pStatus.bullet.Remove(pStatus.bullet[0]);
+            pStatus.nowBullet = pStatus.bullet[0];
+        }
+        else//最小値の弾装填
+        {
+            if (pStatus.nowBullet != nanoBullet) Destroy(pStatus.nowBullet.gameObject);
             pStatus.nowBullet = nanoBullet;
         }
     }
@@ -174,10 +179,14 @@ public class player : MonoBehaviour
 
     void shot()
     {
-        if (Input.GetButton("Shot"))
+        if (pStatus.coolTime <= 0f)//クールタイム有りの発砲
         {
-            if (pStatus.coolTime <= 0f)//クールタイム有りの発砲
+            if (Input.GetButton("Shot"))
             {
+                if (pStatus.nowBullet==nanoBullet&& pStatus.bullet.Count > 0)
+                {
+                    ReLoad();
+                }
                 Audio.PlayOneShot(shotSE);
                 var vect = transform.eulerAngles + new Vector3(0f, 0f, Random.Range(0f,0f));
                 var bullet = Instantiate(pStatus.nowBullet, transform.position, Quaternion.Euler(vect));
@@ -234,9 +243,7 @@ public class player : MonoBehaviour
         Vector2 bSize = line.GetComponent<bullet>().bStatus.size;
         if (size.magnitude* bSize.magnitude < 0.2f)
         {
-            Destroy(pStatus.bullet[0]);
-            pStatus.bullet.Remove(pStatus.bullet[0]);
-            pStatus.nowBullet = nanoBullet;
+            ReLoad();
         }
         else
         {
@@ -287,6 +294,7 @@ public class player : MonoBehaviour
             if (onPlay)
             {
                 Audio.PlayOneShot(hitSE);
+                objRule.shockTime();
                 Camera.main.GetComponent<gameObj>().score -= 100;
                 pStatus.coolTime = 3f;
                 onPlay = !onPlay;

@@ -564,18 +564,6 @@ PrefabInstance:
       propertyPath: Boss
       value: 
       objectReference: {fileID: 2044675777}
-    - target: {fileID: 1484166400, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1484166400, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1484166400, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}
 --- !u!1 &1799866842
@@ -972,7 +960,7 @@ PrefabInstance:
     - target: {fileID: 6127292870780658586, guid: cdc4c8e0c72ff624f9b2149e3fe19b23,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 199.23
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6127292870780658586, guid: cdc4c8e0c72ff624f9b2149e3fe19b23,
         type: 3}
