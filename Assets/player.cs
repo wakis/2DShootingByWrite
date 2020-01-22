@@ -23,7 +23,6 @@ public class player : MonoBehaviour
     GameObject nanoBullet;//最小値の弾
     [SerializeField]
     PlayerStatus pStatus = new PlayerStatus();//ステータス
-
     Rigidbody2D rig;//移動制御用
     gameObj objRule;//ゲームルール
 
@@ -181,7 +180,7 @@ public class player : MonoBehaviour
     {
         if (pStatus.coolTime <= 0f)//クールタイム有りの発砲
         {
-            if (Input.GetButton("Shot"))
+            if (Input.GetButton("Shot")&&!objRule.onMenu)
             {
                 if (pStatus.nowBullet==nanoBullet&& pStatus.bullet.Count > 0)
                 {

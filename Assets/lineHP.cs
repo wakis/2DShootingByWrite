@@ -10,9 +10,9 @@ public class lineHP : MonoBehaviour
     Color minColor;
     Color gradation;
 
-    [SerializeField]
-    float MaxHP;
-    float HP;
+    //[SerializeField]
+    //float MaxHP;
+    //float HP;
 
     gameObj objRule;
     addLine lineMaker;
@@ -22,11 +22,14 @@ public class lineHP : MonoBehaviour
     bool LineLengthIsX;
 
     float penaltyTime;
+
+    bool overHeat;
     // Start is called before the first frame update
     void Start()
     {
+        overHeat = false;
         penaltyTime = 0f;
-        HP = MaxHP;
+        //HP = MaxHP;
         objRule = Camera.main.GetComponent<gameObj>();
         lineMaker = objRule.GetComponent<addLine>();
         line = GetComponent<LineRenderer>();
@@ -38,26 +41,32 @@ public class lineHP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (HP >= 0f)
+        if (lineMaker.HP<=0f)
         {
-            if (!lineMaker.canAddLine)
-            {
-                lineMaker.canAddLine = !lineMaker.canAddLine;
-            }
-            hpManagement();
-        }else
-        {
-            penaltyTime += Time.deltaTime;
+            lineMaker.HP = 0f;
             if (lineMaker.canAddLine)
             {
                 lineMaker.canAddLine = !lineMaker.canAddLine;
             }
-            if (penaltyTime>MaxHP/3)
+        }
+        Debug.Log("zen"+lineMaker.canAddLine);
+        if (lineMaker.HP > 0f&& lineMaker.canAddLine)
+        {
+            hpManagement();
+        }else
+        {
+            penaltyTime += Time.deltaTime;
+            if (penaltyTime> 3f)
             {
-                HP = penaltyTime = 0f;
+                lineMaker.HP = penaltyTime = 0.01f;
+                if (!lineMaker.canAddLine)
+                {
+                    lineMaker.canAddLine = !lineMaker.canAddLine;
+                }
             }
         }
         set_HP_Bar();
+        Debug.Log(lineMaker.canAddLine);
     }
 
     void hpManagement()
@@ -66,34 +75,36 @@ public class lineHP : MonoBehaviour
         {
             if (objRule.gradationTimePer > objRule.getTimePer)
             {
-                HP -= Time.deltaTime * objRule.getTimePer / objRule.gradationTimePer;
+                lineMaker.HP -= Time.deltaTime * objRule.getTimePer / objRule.gradationTimePer;
             }
             else
             {
-                HP -= Time.deltaTime;
+                lineMaker.HP -= Time.deltaTime;
             }
+        }else if (lineMaker.HP <= 0f)
+        {
         }
-        else if (HP < MaxHP)
+        else if (lineMaker.HP < lineMaker.MaxHP)
         {
             if (objRule.gradationTimePer < 1f)
             {
-                HP += Time.deltaTime * objRule.gradationTimePer/2f;
+                lineMaker.HP += Time.deltaTime * objRule.gradationTimePer/2f;
             }
             else
             {
-                HP += Time.deltaTime/2f;
+                lineMaker.HP += Time.deltaTime/2f;
             }
         }
-        else if (HP > MaxHP)
+        else if (lineMaker.HP > lineMaker.MaxHP)
         {
-            HP = MaxHP;
+            lineMaker.HP = lineMaker.MaxHP;
         }
     }
 
 
     void set_HP_Bar()
     {
-        float LineLength = HP / MaxHP * MaxLineLength;
+        float LineLength = lineMaker.HP / lineMaker.MaxHP * MaxLineLength;
         if (LineLengthIsX)
         {
             if (line.GetPosition(1).x!= LineLength)

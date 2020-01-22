@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class selectScene : MonoBehaviour
+public class Menu_select : MonoBehaviour
 {
     [SerializeField]
-    string[] NormalScene;
-    [SerializeField]
-    string[] HardScene;
-    [SerializeField]
-    string[] ExScene;
+    string startSceneName;
     [SerializeField]
     Transform player;
     [SerializeField]
@@ -41,7 +37,7 @@ public class selectScene : MonoBehaviour
 
     private void Awake()
     {
-        pointNum = nextPoint= 0;
+        pointNum = nextPoint = 0;
         player.position = point[pointNum].position;
         line = new LineRenderer();
         Audio = GetComponent<AudioSource>();
@@ -49,17 +45,17 @@ public class selectScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
         playerPos = player.position;
-        int n = -(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")>0?
-            Mathf.CeilToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")): 
-            Mathf.FloorToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"))) ;
-        if ((n > 0|| n < 0)&&Input.anyKeyDown)
+        int n = -(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical") > 0 ?
+            Mathf.CeilToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")) :
+            Mathf.FloorToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")));
+        if ((n > 0 || n < 0) && Input.anyKeyDown)
         {
             Audio.PlayOneShot(selectSE);
             selectPos(n);
@@ -99,28 +95,26 @@ public class selectScene : MonoBehaviour
             }
         }
         player.position = point[pointNum].position;
-        sceneSelect();
+        Select();
     }
-    void sceneSelect()
+    void Select()
     {
-        Debug.Log(pointNum);
         if (Input.GetButtonDown("Shot"))
         {
             Audio.PlayOneShot(doneSE);
-            int n = 0;
             switch (pointNum)
             {
+                case 0:
+                    if(line) Destroy(line.gameObject);
+                    GetComponent<PauseMenu>().select();
+                    break;
                 case 1:
-                    n = (int)Random.Range(0, NormalScene.Length);
-                    SceneManager.LoadSceneAsync(NormalScene[n]);
+                    SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
                     break;
                 case 2:
-                    n = (int)Random.Range(0, HardScene.Length);
-                    SceneManager.LoadSceneAsync(HardScene[n]);
+                    SceneManager.LoadSceneAsync(startSceneName);
                     break;
                 case 3:
-                    n = (int)Random.Range(0, ExScene.Length);
-                    SceneManager.LoadSceneAsync(ExScene[n]);
                     break;
             }
         }
@@ -129,13 +123,13 @@ public class selectScene : MonoBehaviour
     {
         player.position = point[pointNum].position;
         nextPoint = pointNum + n;
-        if (nextPoint < 1)
+        if (nextPoint < 0)
         {
-            nextPoint = 2;
+            nextPoint = point.Length - 1;
         }
-        else if (nextPoint > 2)
+        else if (nextPoint > point.Length-1)
         {
-            nextPoint = 1;
+            nextPoint = 0;
         }
         pointNum = nextPoint;
     }
@@ -260,3 +254,4 @@ public class selectScene : MonoBehaviour
         return mesh;
     }
 }
+

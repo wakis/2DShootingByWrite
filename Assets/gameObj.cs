@@ -33,10 +33,14 @@ public class gameObj : MonoBehaviour
     [SerializeField]
     float TimePer;
     public float getTimePer { get { return TimePer; } }
+    public PauseMenu pauseMenu;
+
+    public bool onMenu;
 
     private void Awake()
     {
-        time = 0f;
+        onMenu = false;
+           time = 0f;
         score = 500;
         gameclear = false;
         if (player == null && Boss == null)
@@ -71,6 +75,10 @@ public class gameObj : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            pauseMenu.gameObject.SetActive(true);
+        }
         if (player == null || player.tag != "Player")
         {
             Awake();
@@ -155,29 +163,34 @@ public class gameObj : MonoBehaviour
 
     void timeKeeper()
     {
-        if (gradationTimePer <= 0f)
-        {
-            gradationTimePer = 0.1f;
-        }
-        if (onConcentration)
-        {
-            if (gradationTimePer > TimePer)
+        if (!onMenu) {
+            if (onConcentration)
             {
-                gradationTimePer -= (1f - TimePer) * gradationTimePer * Time.deltaTime * 4f;
-            }
-            else if (gradationTimePer != TimePer)
+                if (gradationTimePer > TimePer)
+                {
+                    gradationTimePer -= (1f - TimePer) * gradationTimePer * Time.deltaTime * 4f;
+                }
+                else if (gradationTimePer != TimePer)
+                {
+                    gradationTimePer = TimePer;
+                }
+            } else
             {
-                gradationTimePer = TimePer;
-            }
-        }else
-        {
-            if (gradationTimePer < 1f)
-            {
-                gradationTimePer += TimePer*1/gradationTimePer* Time.deltaTime*8f;
-            }
-            else if(gradationTimePer != 1f)
-            {
-                gradationTimePer = 1f;
+                if (gradationTimePer != 0f && gradationTimePer < 1f)
+                {
+                    if (gradationTimePer == 0f)
+                    {
+                        gradationTimePer += 0.1f;
+                    }
+                    else
+                    {
+                        gradationTimePer += TimePer * 1 / gradationTimePer * Time.deltaTime * 8f;
+                    }
+                }
+                else if (gradationTimePer != 1f)
+                {
+                    gradationTimePer = 1f;
+                }
             }
         }
         gameDeltaTime = gradationTimePer * Time.deltaTime;

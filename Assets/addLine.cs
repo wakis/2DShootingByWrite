@@ -37,7 +37,9 @@ public class addLine : MonoBehaviour
     [SerializeField]
     Color HitCol;
     Color setCol;
-
+    public float MaxHP;
+    [System.NonSerialized]
+    public float HP;
 
     gameObj objRule;
     
@@ -46,6 +48,7 @@ public class addLine : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        HP = MaxHP;
         canAddLine = true;
         objRule = Camera.main.GetComponent<gameObj>();
         Player = objRule.player.GetComponent<player>();
@@ -55,17 +58,21 @@ public class addLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*if(canAddLine == objRule.onMenu)
+        {
+            canAddLine = !canAddLine;
+        }*/
         Concentration();
-        if (Input.GetMouseButtonDown(0)&&canAddLine)
+        if (Input.GetMouseButtonDown(0)&&(canAddLine&&!objRule.onMenu))
         {
             objRule.onConcentration = true;
             AddLine_Obj();
         }
-        if (Input.GetMouseButton(0) && canAddLine)
+        if (Input.GetMouseButton(0) && (canAddLine && !objRule.onMenu))
         {
             AddPositionToLineRend();
         }
-        if ((Input.GetMouseButtonUp(0)&& objRule.onConcentration) || (objRule.onConcentration&&!canAddLine))
+        if ((Input.GetMouseButtonUp(0)&& objRule.onConcentration) || (objRule.onConcentration&&!(canAddLine && !objRule.onMenu)))
         {
             filter.transform.position = Vector3.zero;
             objRule.onConcentration = false;
