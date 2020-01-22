@@ -545,7 +545,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxColor: {r: 0.39999998, g: 1, b: 0.8097561, a: 1}
   minColor: {r: 1, g: 0.39999998, b: 0.590244, a: 1}
-  MaxHP: 1
 --- !u!1 &959901443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,6 +1341,7 @@ MonoBehaviour:
   filter: {fileID: 1484166399}
   ConcentCol: {r: 0, g: 1, b: 0.6829269, a: 0}
   HitCol: {r: 1, g: 0.20000002, b: 0.20000002, a: 0}
+  MaxHP: 1
   canAddLine: 0
 --- !u!114 &2984213599921911222
 MonoBehaviour:
