@@ -33,9 +33,9 @@ public class TrackBullet : MonoBehaviour
                 {
                     if (transform.position.x > objRule.player.transform.position.x + 1f) front = !front;
                 }
-                transform.position += vect * Time.deltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
+                transform.position += vect * objRule.gameDeltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
                 var ang = transform.eulerAngles;
-                ang.z += (int)(Time.deltaTime * 720f);
+                ang.z += (int)(objRule.gameDeltaTime * 720f);
                 transform.eulerAngles = ang;
             }
             else
@@ -46,7 +46,7 @@ public class TrackBullet : MonoBehaviour
             }
         }else
         {
-            var trans = transform.position + vect * Time.deltaTime * 3f;
+            var trans = transform.position + vect * objRule.gameDeltaTime * 3f;
             transform.position = trans;
         }
         if (objRule.ScreenSize[0].x > transform.position.x || transform.position.x > objRule.ScreenSize[1].x ||

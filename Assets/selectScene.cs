@@ -56,7 +56,7 @@ public class selectScene : MonoBehaviour
     void Update()
     {
         playerPos = player.position;
-        int n = (Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")>0?
+        int n = -(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")>0?
             Mathf.CeilToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical")): 
             Mathf.FloorToInt(Input.GetAxis("Horizontal") + Input.GetAxis("Vertical"))) ;
         if ((n > 0|| n < 0)&&Input.anyKeyDown)

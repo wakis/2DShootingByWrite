@@ -27,23 +27,23 @@ public class stopBullet : MonoBehaviour
             {
                 if (!stay)
                 {
-                    transform.position -= Vector3.right * Time.deltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
+                    transform.position -= Vector3.right * objRule.gameDeltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 4f;
                     if (-(objRule.ScreenSize[1].x - objRule.ScreenSize[0].x) * 0.4f > transform.position.x) stay = !stay;
                 }
                 else
                 {
                     if (shotTime < 1f)
                     {
-                        shotTime += Time.deltaTime;
+                        shotTime += objRule.gameDeltaTime;
                         reVect();
                     }
                     else
                     {
-                        transform.position += vect * Time.deltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 10f;
+                        transform.position += vect * objRule.gameDeltaTime * Camera.main.GetComponent<gameObj>().scrollSpeed * 10f;
                     }
                 }
                 var ang = transform.eulerAngles;
-                ang.z += (int)(Time.deltaTime * 720f);
+                ang.z += (int)(objRule.gameDeltaTime * 720f);
                 transform.eulerAngles = ang;
             }
             else
@@ -54,7 +54,7 @@ public class stopBullet : MonoBehaviour
             }
         }else
         {
-            var trans = transform.position + vect * Time.deltaTime*3f;
+            var trans = transform.position + vect * objRule.gameDeltaTime*3f;
             transform.position = trans;
         }
         if (objRule.ScreenSize[0].x > transform.position.x || transform.position.x > objRule.ScreenSize[1].x ||

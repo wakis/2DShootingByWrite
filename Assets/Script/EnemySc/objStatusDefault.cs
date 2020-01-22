@@ -58,7 +58,7 @@ public class objStatusDefault : MonoBehaviour
             coolTime = setCoolTime;
         }else
         {
-            coolTime -= Time.deltaTime;
+            coolTime -= objRule.gameDeltaTime;
         }
         if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x) return 1;
         return 0;
@@ -71,7 +71,7 @@ public class objStatusDefault : MonoBehaviour
     protected Vector3 transPos_Front(Transform trans,float speed)
     {
         var transPos = trans.position;
-        transPos -= speed * Time.deltaTime * trans.right;
+        transPos -= speed * objRule.gameDeltaTime * trans.right;
 
         return transPos;
     }

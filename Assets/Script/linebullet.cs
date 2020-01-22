@@ -10,7 +10,7 @@ public class linebullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Player = Camera.main.GetComponent<GAMERULE>().Player.GetComponent<player>();
+        Player = Camera.main.GetComponent<gameObj>().player.GetComponent<player>();
     }
     // Update is called once per frame
     void Update()

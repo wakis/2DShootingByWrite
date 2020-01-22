@@ -52,7 +52,7 @@ namespace enemyMoveScript
 
         public override int Play(GameObject obj)//画面内行動
         {
-            standTime += Time.deltaTime;
+            standTime += objRule.gameDeltaTime;
             obj.transform.position = transPos_Front(obj.transform, objRule.scrollSpeed);
             var trans = transform.position;
             trans.y = transY +Mathf.Sin(rand + standTime) *wait;
@@ -66,7 +66,7 @@ namespace enemyMoveScript
             }
             else
             {
-                coolTime -= Time.deltaTime;
+                coolTime -= objRule.gameDeltaTime;
             }
             if (objRule.ScreenSize[0].x * 1.1f > obj.transform.position.x) return 1;
                 return 0;
