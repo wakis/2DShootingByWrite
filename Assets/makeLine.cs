@@ -17,9 +17,8 @@ public class makeLine : MonoBehaviour
         objRule.onConcentration = true;
         objRule.gradationTimePer = 0.01f;
         objRule.GetComponent<addLine>().HP = objRule.GetComponent<addLine>().MaxHP;
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetButtonUp("Linewrite"))
         {
-            //objRule.onConcentration = false;
             Destroy(gameObject);
         }
     }

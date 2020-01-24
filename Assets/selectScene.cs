@@ -65,15 +65,15 @@ public class selectScene : MonoBehaviour
             selectPos(n);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetButtonDown("Linewrite"))
         {
             AddLine_Obj();
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetButton("Linewrite"))
         {
             AddPositionToLineRend();
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetButtonUp("Linewrite"))
         {
             if (line.positionCount < 3)//要素数不足
             {

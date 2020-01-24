@@ -104,7 +104,7 @@ public class player : MonoBehaviour
     }
     void setBullet()
     {
-        if (Input.GetButtonDown("Reload")&&pStatus.nowBullet == nanoBullet && pStatus.bullet.Count > 1)
+        if (pStatus.nowBullet == nanoBullet && pStatus.bullet.Count > 1)
         {
             ReLoad();
         }

@@ -33,11 +33,11 @@ public class liteSE : MonoBehaviour
             }
         }else
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButtonDown("Linewrite"))
             {
                 Audio.Play();
             }
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetButtonUp("Linewrite"))
             {
                 Audio.Pause();
             }

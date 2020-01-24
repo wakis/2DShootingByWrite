@@ -63,16 +63,16 @@ public class addLine : MonoBehaviour
             canAddLine = !canAddLine;
         }*/
         Concentration();
-        if (Input.GetMouseButtonDown(0)&&(canAddLine&&!objRule.onMenu))
+        if (Input.GetButtonDown("Linewrite") &&(canAddLine&&!objRule.onMenu))
         {
             objRule.onConcentration = true;
             AddLine_Obj();
         }
-        if (Input.GetMouseButton(0) && (canAddLine && !objRule.onMenu))
+        if (Input.GetButton("Linewrite") && (canAddLine && !objRule.onMenu))
         {
             AddPositionToLineRend();
         }
-        if ((Input.GetMouseButtonUp(0)&& objRule.onConcentration) || (objRule.onConcentration&&!(canAddLine && !objRule.onMenu)))
+        if ((Input.GetButtonUp("Linewrite") && objRule.onConcentration) || (objRule.onConcentration&&!(canAddLine && !objRule.onMenu)))
         {
             filter.transform.position = Vector3.zero;
             objRule.onConcentration = false;

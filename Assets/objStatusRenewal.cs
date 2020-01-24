@@ -50,7 +50,9 @@ public class objStatusRenewal : MonoBehaviour
         switch (status)
         {
             case objStatus.set:
-                stepnum=objType.Setting(gameObject);
+                if (true) {
+                    stepnum = objType.Setting(gameObject);
+                }
                 break;
             case objStatus.stay:
                 objType.Scroll(gameObject);
