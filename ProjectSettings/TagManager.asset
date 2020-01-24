@@ -42,8 +42,11 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - MaxFront
   m_SortingLayers:
+  - name: minus
+    uniqueID: 1550738543
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
