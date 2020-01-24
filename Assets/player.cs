@@ -145,6 +145,34 @@ public class player : MonoBehaviour
     void transPosition()//プレイヤーの移動
     {
         float hor = Input.GetAxis("Horizontal"), ver = Input.GetAxis("Vertical");
+        /*if (Mathf.Abs(hor)>0&&
+            !(0.9f * objRule.ScreenSize[0].x < transform.position.x && transform.position.x < 0.9f * objRule.ScreenSize[1].x))
+        {
+            var trans = transform.position;
+            if (transform.position.x < 0.9f * objRule.ScreenSize[0].x)
+                trans.x = 0.9f * objRule.ScreenSize[0].x;
+            else
+                trans.x = 0.9f * objRule.ScreenSize[1].x;
+            transform.position = trans;
+            if (transform.position.x / Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
+            {
+                hor = 0;
+            }
+        }
+        if (Mathf.Abs(ver) > 0&&
+            !(0.9f * objRule.ScreenSize[0].y < transform.position.y && transform.position.y < 0.9f * objRule.ScreenSize[1].y))
+        {
+            var trans = transform.position;
+            if (transform.position.y < 0.9f * objRule.ScreenSize[0].y)
+                trans.y = 0.9f * objRule.ScreenSize[0].y;
+            else
+                trans.y = 0.9f * objRule.ScreenSize[1].y;
+            transform.position = trans;
+            if (transform.position.y / Mathf.Abs(transform.position.y) == ver / Mathf.Abs(ver))
+            {
+                ver = 0;
+            }
+        }*/
         if (Mathf.Abs(hor)>0&&
             !(0.9f * objRule.ScreenSize[0].x < transform.position.x && transform.position.x < 0.9f * objRule.ScreenSize[1].x))
         {
@@ -203,8 +231,7 @@ public class player : MonoBehaviour
         }
         if (pStatus.coolTime > 0f) pStatus.coolTime -= objRule.gameDeltaTime;
     }
-
-    ///ここに遠隔リサイズ処理入れる
+    
 
     public void reSize(LineRenderer line)
     {

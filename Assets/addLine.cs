@@ -111,15 +111,18 @@ public class addLine : MonoBehaviour
     {
         var mousePos = Input.mousePosition;
         mousePos.z = Camera.main.nearClipPlane + 10.0f;
-        if (lineList.Last().positionCount == 0)
+        if (lineList.Last())
         {
-            lineList.Last().positionCount++;
-            lineList.Last().SetPosition(lineList.Last().positionCount - 1, Camera.main.ScreenToWorldPoint(mousePos));
-        }
-        else if ((lineList.Last().GetPosition(lineList.Last().positionCount - 1) - Camera.main.ScreenToWorldPoint(mousePos)).magnitude> lineWidth)
-        {
-            crossLine(lineList.Last());
-            setLinePosition(Camera.main.ScreenToWorldPoint(mousePos));
+            if (lineList.Last().positionCount == 0)
+            {
+                lineList.Last().positionCount++;
+                lineList.Last().SetPosition(lineList.Last().positionCount - 1, Camera.main.ScreenToWorldPoint(mousePos));
+            }
+            else if ((lineList.Last().GetPosition(lineList.Last().positionCount - 1) - Camera.main.ScreenToWorldPoint(mousePos)).magnitude > lineWidth)
+            {
+                crossLine(lineList.Last());
+                setLinePosition(Camera.main.ScreenToWorldPoint(mousePos));
+            }
         }
         filter.transform.position = centering(lineList.Last());
     }
