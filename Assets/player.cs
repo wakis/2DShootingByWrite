@@ -23,6 +23,7 @@ public class player : MonoBehaviour
     GameObject nanoBullet;//最小値の弾
     [SerializeField]
     PlayerStatus pStatus = new PlayerStatus();//ステータス
+    public GameObject getNownowBullet { get { return pStatus.nowBullet; } }
     Rigidbody2D rig;//移動制御用
     gameObj objRule;//ゲームルール
 
@@ -179,7 +180,7 @@ public class player : MonoBehaviour
             var trans = transform.position;
             if (transform.position.x < 0.9f * objRule.ScreenSize[0].x)
                 trans.x = 0.9f * objRule.ScreenSize[0].x;
-            else
+            else if (transform.position.x > 0.9f * objRule.ScreenSize[1].x)
                 trans.x = 0.9f * objRule.ScreenSize[1].x;
             transform.position = trans;
             if (transform.position.x / Mathf.Abs(transform.position.x) == hor / Mathf.Abs(hor))
@@ -193,7 +194,7 @@ public class player : MonoBehaviour
             var trans = transform.position;
             if (transform.position.y < 0.9f * objRule.ScreenSize[0].y)
                 trans.y = 0.9f * objRule.ScreenSize[0].y;
-            else
+            else if (transform.position.y > 0.9f * objRule.ScreenSize[1].y)
                 trans.y = 0.9f * objRule.ScreenSize[1].y;
             transform.position = trans;
             if (transform.position.y / Mathf.Abs(transform.position.y) == ver / Mathf.Abs(ver))

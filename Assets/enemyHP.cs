@@ -26,7 +26,8 @@ public class enemyHP : MonoBehaviour
     void Start()
     {
         objRule = Camera.main.GetComponent<gameObj>();
-        MaxHP = objRule.Boss.GetComponent<eBossMove>().MAXHP;
+        if (objRule.Boss.GetComponent<eBossMove>())
+            MaxHP = objRule.Boss.GetComponent<eBossMove>().MAXHP;
         penaltyTime = 0f;
         HP = MaxHP;
         lineMaker = objRule.GetComponent<addLine>();
@@ -39,6 +40,8 @@ public class enemyHP : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (objRule.Boss == null) return;
+        if (!objRule.Boss.GetComponent<eBossMove>()) return;
         if (objRule.Boss!=null) {
             HP = objRule.Boss.GetComponent<eBossMove>().getHP;
         }else

@@ -12,6 +12,9 @@ public class TutorialLiner : MonoBehaviour
     float settime;
     [SerializeField]
     Transform penTip;
+    [SerializeField]
+    Transform mouseTip;
+    Vector3 mousePos;
     private void Awake()
     {
         linePositions.Clear();
@@ -23,6 +26,7 @@ public class TutorialLiner : MonoBehaviour
         }
         settime = 1f / line.positionCount;
         lineTip = new Vector3();
+        mousePos = mouseTip.position;
     }
     // Start is called before the first frame update
     void Start()
@@ -36,6 +40,7 @@ public class TutorialLiner : MonoBehaviour
     {
         loopLiner();
         penTip.localPosition = lineTip;
+        mouseTip.position = mousePos + lineTip;
     }
     
     void loopLiner()

@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class gameObj : MonoBehaviour
 {
     static public int[] Score_TIme = new int[2];
-    public TextMesh scoreText;
+    public GameObject scoreText;
+    public Text scoreTextFront;
     [System.NonSerialized]
     public int score;
-    public TextMesh timeText;
+    public Text timeText;
     [System.NonSerialized]
     public float time;
     public TextMesh BOSSText;
@@ -22,7 +24,6 @@ public class gameObj : MonoBehaviour
     public GameObject Boss;
     public bool gameclear;
     public float clearaftime;
-    Vector2[] textPos = new Vector2[2];
     Vector2 BosstextPos;
     [System.NonSerialized]
     public bool onConcentration;
@@ -57,11 +58,8 @@ public class gameObj : MonoBehaviour
                 }
             }
         }
-        textPos[0] = scoreText.transform.position;
-        textPos[1] = timeText.transform.position;
         BosstextPos = BOSSText.transform.position;
-        scoreText.transform.position += new Vector3(0f, textPos[0].y, 0f).normalized;
-        timeText.transform.position += new Vector3(0f, textPos[1].y, 0f).normalized;
+        //BosstextPos.y = ScreenSize[0].y * 0.8f;
         BOSSText.transform.position += new Vector3(0f, BosstextPos.y, 0f).normalized;
         gradationTimePer = 1f;
         onConcentration = false;
@@ -75,7 +73,7 @@ public class gameObj : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetButtonDown("Pause"))
         {
             pauseMenu.gameObject.SetActive(true);
         }
@@ -97,40 +95,36 @@ public class gameObj : MonoBehaviour
                 }
             }
         }
-        if (time<1f)
-        {
-            if (time < 0.5f)
-            {
-                scoreText.transform.position -= new Vector3(0f, textPos[0].y, 0f).normalized * gameDeltaTime * 2f;
-            }
-            else
-            {
-                timeText.transform.position -= new Vector3(0f, textPos[1].y, 0f).normalized * gameDeltaTime * 2f;
-            }
-        }else if(scoreText.transform.position.y!= textPos[0].y|| timeText.transform.position.y!= textPos[1].y)
-        {
-            scoreText.transform.position = (Vector3)textPos[0] * 1f;
-            timeText.transform.position = (Vector3)textPos[1] * 1f;
-        }
         if (!gameclear)
         {
-            scoreText.text = "HP : "+score.ToString();
-            if (score < 0f) scoreText.text = "HP : "+"0";
+            scoreTextFront.text = "HP:" + score.ToString();
+            if (score < 0f) scoreTextFront.text = "HP:" + "0";
             timeText.text = time.ToString("f2");
-            if(Boss!=null&& bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
+            if (Boss != null && Boss.GetComponent<eBossMove>())
             {
-                bossHP = Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP;
-                string s = "";
-                var strAddByLoop = new System.Text.StringBuilder();
-                for (int lp = 0; lp < bossHP; lp++)
+                if (bossHP != Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP)
                 {
-                    s += "||";
+                    bossHP = Boss.GetComponent<eBossMove>().getHP * 30 / Boss.GetComponent<eBossMove>().MAXHP;
+                    string s = "";
+                    var strAddByLoop = new System.Text.StringBuilder();
+                    for (int lp = 0; lp < bossHP; lp++)
+                    {
+                        s += "||";
+                    }
+                    BOSSText.text = s;
                 }
-                BOSSText.text = s;
-            }else if (Boss==null)
+                else if (Boss == null)
+                {
+                    clearaftime = 0f;
+                    gameclear = true;
+                }
+            }else
             {
-                clearaftime = 0f;
-                gameclear = true;
+                if (Boss == null)
+                {
+                    clearaftime = 0f;
+                    gameclear = true;
+                }
             }
 
             if (score < 0f)

@@ -1855,7 +1855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &387046820
 Animator:
   serializedVersion: 3
@@ -6489,49 +6489,14 @@ PrefabInstance:
       propertyPath: Boss
       value: 
       objectReference: {fileID: 2044675777}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: HitCol.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: HitCol.g
-      value: 0.19999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: HitCol.b
-      value: 0.19999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: ConcentCol.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: ConcentCol.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: ConcentCol.b
-      value: 0.6829269
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: ConcentCol.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 943493354077473062, guid: fb707fb58dc075f488bb4de92bccbc34,
-        type: 3}
-      propertyPath: MaxHP
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 861202498, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}
       propertyPath: MaxHP
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1271922210817499279, guid: fb707fb58dc075f488bb4de92bccbc34,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb707fb58dc075f488bb4de92bccbc34, type: 3}

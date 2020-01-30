@@ -9,12 +9,16 @@ public class getScore : MonoBehaviour
     void Start()
     {
         gameRule = Camera.main.GetComponent<gameObj>();
+        transform.position = new Vector2(gameRule.ScreenSize[0].x, gameRule.ScreenSize[1].y) * 0.8f;
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (transform.position.x != gameRule.ScreenSize[0].x * 0.8f)
+        {
+            transform.position = new Vector2(gameRule.ScreenSize[0].x, gameRule.ScreenSize[1].y) * 0.8f;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

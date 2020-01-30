@@ -49,7 +49,6 @@ public class lineHP : MonoBehaviour
                 lineMaker.canAddLine = !lineMaker.canAddLine;
             }
         }
-        Debug.Log("zen"+lineMaker.canAddLine);
         if (lineMaker.HP > 0f&& lineMaker.canAddLine)
         {
             hpManagement();
@@ -66,7 +65,6 @@ public class lineHP : MonoBehaviour
             }
         }
         set_HP_Bar();
-        Debug.Log(lineMaker.canAddLine);
     }
 
     void hpManagement()
