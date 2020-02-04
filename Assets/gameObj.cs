@@ -75,7 +75,9 @@ public class gameObj : MonoBehaviour
     {
         if (Input.GetButtonDown("Pause"))
         {
+            Debug.Log("P"+ pauseMenu.gameObject.name);
             pauseMenu.gameObject.SetActive(true);
+            Debug.Log(pauseMenu.gameObject.activeSelf);
         }
         if (player == null || player.tag != "Player")
         {

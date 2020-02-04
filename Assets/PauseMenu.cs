@@ -7,12 +7,14 @@ public class PauseMenu : MonoBehaviour
     gameObj objRule;
     float stack_GradationTimePer;
     int n = 0;
+    private void Awake()
+    {
+        //gameObject.SetActive(false);
+    }
     // Start is called before the first frame update
     void Start()
     {
         objRule=Camera.main.GetComponent<gameObj>();
-        gameObject.SetActive(false);
-        Debug.Log("OK");
     }
 
     private void OnEnable()
@@ -34,7 +36,6 @@ public class PauseMenu : MonoBehaviour
             else
             {
                 n++;
-                Debug.Log("n" + n);
             }
             objRule.onMenu = !objRule.onMenu;
         }
